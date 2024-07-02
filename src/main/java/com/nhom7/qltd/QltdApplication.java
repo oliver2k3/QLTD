@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class QltdApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(QltdApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(QltdApplication.class, args);
+    }
 
 }
