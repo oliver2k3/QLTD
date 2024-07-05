@@ -1,65 +1,60 @@
 package com.nhom7.qltd.controller;
 
+import com.nhom7.qltd.model.HopDongVay;
 import com.nhom7.qltd.model.User;
+import com.nhom7.qltd.service.HopdongvayService;
 import com.nhom7.qltd.service.UserService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
-@RequestMapping("/")
+@RequestMapping("/user")
 @RequiredArgsConstructor
 
 public class UserController {
+@Autowired
     private final UserService userService;
+@Autowired
+    private final HopdongvayService hopdongvayService;
+@GetMapping("/profile")
+    public String profile( Model model) {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    String username = authentication.getName();
+    User user = userService.findByUsername(username)
+            .orElseThrow(() -> new IllegalArgumentException("Invalid User Id:" + username));
+    model.addAttribute("users", user);
+    return "users/profile";
+}
+@GetMapping("/profile/edit")
+    public String editProfile(Model model) {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    String username = authentication.getName();
+    User user = userService.findByUsername(username)
+            .orElseThrow(() -> new IllegalArgumentException("Invalid User Id:" + username));
+    model.addAttribute("users", user);
+    return "users/editProfile";
+}
+@GetMapping("/hopdongvay")
+    public String hopdongvay(Model model) {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    String username = authentication.getName();
+    User user = userService.findByUsername(username)
+            .orElseThrow(() -> new IllegalArgumentException("Invalid User Id:" + username));
+    List<HopDongVay> hopdongvays = hopdongvayService.getAllHopdongvayByUser(username);
+    model.addAttribute("hopdongvays", hopdongvays);
+    return "users/hopdongvay";
 
-    @GetMapping("/login")
-    public String login() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null && !auth.getName().equals("anonymousUser")) {
+}
 
-            return "redirect:/";
-        }
-
-        return "users/login";
-    }
-
-    @GetMapping("/register")
-    public String register(@NotNull Model model) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null && !auth.getName().equals("anonymousUser")) {
-
-            return "redirect:/";
-        }
-        model.addAttribute("user", new User()); // Thêm một đối tượng User mới vào model
-        return "users/register";
-    }
-
-    @PostMapping("/register")
-    public String register(@Valid @ModelAttribute("user") User user, // Validate đối tượng User
-                           @NotNull BindingResult bindingResult, // Kết quả của quá trình validate
-                           Model model) {
-        if (bindingResult.hasErrors()) { // Kiểm tra nếu có lỗi validate
-            var errors = bindingResult.getAllErrors()
-                    .stream()
-                    .map(DefaultMessageSourceResolvable::getDefaultMessage)
-                    .toArray(String[]::new);
-            model.addAttribute("errors", errors);
-            return "users/register"; // Trả về lại view "register" nếu có lỗi
-        }
-
-        userService.save(user); // Lưu người dùng vào cơ sở dữ liệu
-        userService.setDefaultRole(user.getUsername()); // Gán vai trò mặc định cho người dùng
-        return "redirect:/login"; // Chuyển hướng người dùng tới trang "login"
-    }
 }

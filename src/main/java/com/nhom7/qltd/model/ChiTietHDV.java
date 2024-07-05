@@ -10,22 +10,26 @@ import java.util.Date;
 @Table(name = "CT_HDV")
 public class ChiTietHDV {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID")
+    private int id;
     @OneToOne
+    @JoinColumn(name = "ID_HopDongVay", referencedColumnName = "ID")
     private HopDongVay hopDongVay;
     @ManyToOne
     @JoinColumn(name = "ID_GoiVay", referencedColumnName = "ID")
     private GoiVay goiVay;
-    @Column(name = "LoanAmount", nullable = false)
+    @Column(name = "LoanAmount")
     private float soTien;
-    @Column(name = "InterestRate", nullable = false)
+    @Column(name = "InterestRate")
     private float laiSuat;
     @Column(name = "LoanTerm", nullable = false)
     private int thoiHan;
-    @Column(name = "EMI", nullable = false)
+    @Column(name = "EMI")
     private float emi;
-    @Column(name = "TotalPayment", nullable = false)
+    @Column(name = "TotalPayment")
     private float tongTien;
-    @Column(name = "TotalInterest", nullable = false)
+    @Column(name = "TotalInterest")
     private float tongLai;
     @Column(name = "DaTra")
     private float daTra;

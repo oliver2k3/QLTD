@@ -41,7 +41,7 @@
                             </a>
                         </div><!-- /.service-one__image -->
                         <div class="service-one__content">
-                            <a asp-controller="GoiVay" asp-action="Details" asp-route-id="@item.Id">
+                            <a th:href="@{/goivay/detail/{id}(id=${goivay.maGoiVay})}">
                                 <div class="service-icon">
                                     <i class="flaticon-online-money"></i>
                                 </div>

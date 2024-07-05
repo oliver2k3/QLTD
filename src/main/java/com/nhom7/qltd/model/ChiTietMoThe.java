@@ -10,6 +10,9 @@ import java.util.Date;
 @Table(name = "CT_HDMT")
 public class ChiTietMoThe {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID")
+    private int id;
     @OneToOne
     @JoinColumn(name = "ID_HDMT", referencedColumnName = "ID")
     private HopDongMoThe hopDongMoThe;

@@ -9,7 +9,7 @@
     <title>Title</title>
 </head>
 <body>
-<section layout:fragment="content" >
+<--!--> <section layout:fragment="content" >
 
     <div class="stricky-header stricked-menu main-menu">
         <div class="sticky-header__content"></div><!-- /.sticky-header__content -->
@@ -23,7 +23,7 @@
         </div><!-- /.container -->
     </section><!-- /.page-header -->
 
-    <section class="service-details">
+    <section class="service-details" th:object="${goivays}" >
         <div class="container">
             <div class="row">
                 <div class="col-lg-4">
@@ -94,25 +94,24 @@
 
                 </div><!-- /.col-lg-4 -->
                 <div class="col-lg-8">
-                    <div th:object="${goivays}" class="service-details__content">
+                    <div  class="service-details__content">
                         <div class="service-details__image">
                             <img src="../Layout/User/assets/images/services/service-d-1-1.jpg" class="img-fluid" alt="">
                         </div><!-- /.service-details__image -->
-                        <h3>@Model.Title</h3>
-                        <h4 th:></h4>
-                        <p>
-                            @Model.Description1
-
+                        <h3 th:text="${goivays.tenGoiVay}"></h3>
+                        <h4 ></h4>
+                        <p th:text="${goivays.moTa1}">
                         </p>
-                        <p>
-                            @Model.Description2
+                        <p th:text="${goivays.moTa2}">
+
                         </p>
 
                         <div class="service-details__loan">
                             <div class="block-title">
                                 <h4>Yêu cầu cho vay:</h4>
                             </div>
-                            <p>@Model.Description3</p>
+                            <p th:text="${goivays.moTa3}">
+                               </p>
                             <ul class="list-unstyled about-two__list service-details__list">
                                 <li>
                                     <i class="fa fa-check-circle"></i>
@@ -184,5 +183,6 @@
     </section><!-- /.service-details -->
 
 </section>
+
 </body>
 </html>

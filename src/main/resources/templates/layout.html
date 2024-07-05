@@ -58,7 +58,7 @@
         <nav class="main-menu">
             <div class="container">
                 <div class="logo-box">
-                    <a href=""><img th:src="@{Layout/User/assets/images/logo-dark.png}" width="155" alt=""></a>
+                    <a href="/"><img th:src="@{Layout/User/assets/images/logo-dark.png}" width="155" alt=""></a>
                     <span class="fa fa-bars mobile-nav__toggler"></span>
                 </div><!-- /.logo-box -->
                 <ul class="main-menu__list">
@@ -76,7 +76,7 @@
                     <li class="dropdown">
                         <a asp-action="Index" asp asp-controller="GoiVay">Dịch Vụ</a>
                         <ul>
-                            <li><a href="goivay">Gói Vay</a></li>
+                            <li><a href="/goivay">Gói Vay</a></li>
                             <li><a asp-action="Index"  asp-controller="Card">Thẻ Tín Dụng</a></li>
 
                         </ul>
@@ -88,9 +88,9 @@
                     </li>
 
                     <li class="dropdown" sec:authorize="isAuthenticated()">
-                        <a href="/User/profile/@userid">Tài Khoản</a>
+                        <a th:href="@{/user/profile}">Tài Khoản</a>
                         <ul>
-                            <li><a asp-action="GoiVay"  asp asp-controller="User">Gói Vay</a></li>
+                            <li><a th:href="@{/user/hopdongvay}">Hợp đồng vay</a></li>
                             <li><a asp-action="Card" asp asp-controller="User">Thẻ Tín Dụng</a></li>
 
                         </ul>

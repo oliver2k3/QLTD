@@ -2,6 +2,7 @@ package com.nhom7.qltd.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
@@ -28,7 +29,7 @@ public class HopDongVay {
     @NotBlank(message = "Vui lòng nhập địa chỉ")
     private String address;
     @Column(name = "salary", nullable = false)
-    @NotBlank(message = "Vui lòng nhập mức lương")
+    @NotNull(message = "Vui lòng nhập mức lương")
     private float salary;
     @Column(name = "maritalStatus")
     private String maritalStatus;
@@ -40,8 +41,14 @@ public class HopDongVay {
     private String industryPosition;
     @Column(name = "BirthDay")
     private Date birthDay;
+    @Column(name = "CCCD_Image1")
+    private String cccdImage1;
+    @Column(name = "CCCD_Image2")
+    private String cccdImage2;
+    @Column(name = "document_file")
+    private String documentFile;
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "ID")
+    @JoinColumn(name = "user_name", referencedColumnName = "user_name")
     private User user;
     @ManyToOne
     @JoinColumn(name = "status_id", referencedColumnName = "ID")
@@ -49,5 +56,6 @@ public class HopDongVay {
     @ManyToOne
     @JoinColumn(name = "payment_id", referencedColumnName = "ID")
     private Payment payment;
-
+@OneToOne(cascade = CascadeType.ALL)
+    private ChiTietHDV CT_HDV;
 }
