@@ -88,7 +88,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Số tiền vay*</label>
-                                <input type="number" name="SoTienVay" th:field="*{CT_HDV.tongTien}" class="form-control contact-one__form-input" placeholder="" required>
+                                <input type="number" name="SoTienVay" th:field="*{CT_HDV.soTien}" class="form-control contact-one__form-input" placeholder="" required>
                             </div><!-- /.form-group-->
                         </div><!-- /.col-md-6-->
                         <div class="col-md-6">
@@ -115,18 +115,12 @@
                             <div class="form-group">
                                 <label>Thời hạn vay</label>
                                 <select name="ThoiHanVay" th:field="*{CT_HDV.thoiHan}" class="contact-one__form-input custom-select" required>
-                                    <option value="1">1 Tháng</option>
-                                    <option value="2">2 Tháng</option>
                                     <option value="3">3 Tháng</option>
-                                    <option value="4">4 Tháng</option>
-                                    <option value="5">5 Tháng</option>
                                     <option value="6">6 Tháng</option>
-                                    <option value="7">7 Tháng</option>
-                                    <option value="8">8 Tháng</option>
-                                    <option value="9">9 Tháng</option>
-                                    <option value="10">10 Tháng</option>
-                                    <option value="11">11 Tháng</option>
                                     <option value="12">12 Tháng</option>
+                                    <option value="18">18 Tháng</option>
+                                    <option value="24">24 Tháng</option>
+
 
                                 </select>
                             </div><!-- /.form-group-->
@@ -281,21 +275,21 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>Ngân hàng</label>
-                                <input type="text" name="bankname" class="form-control contact-one__form-input" placeholder="" required>
+                                <input type="text" th:field="*{CT_HDV.tenNganHang}" name="bankname" class="form-control contact-one__form-input" placeholder="" required>
                             </div><!-- /.form-group-->
                         </div><!-- /.col-md-4-->
 
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>Số tài khoản</label>
-                                <input type="text" name="cardnumber" class="form-control contact-one__form-input" placeholder="" required>
+                                <input type="text" name="cardnumber" th:field="*{CT_HDV.soTaiKhoan}" class="form-control contact-one__form-input" placeholder="" required>
                             </div><!-- /.form-group-->
                         </div><!-- /.col-md-4-->
 
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>Tên tài khoản</label>
-                                <input type="text" name="cardname" class="form-control contact-one__form-input" placeholder="" required>
+                                <input type="text" name="cardname" th:field="*{CT_HDV.tenTaiKhoan}" class="form-control contact-one__form-input" placeholder="" required>
                             </div><!-- /.form-group-->
                         </div><!-- /.col-md-4-->
                     </div><!-- /.row-->

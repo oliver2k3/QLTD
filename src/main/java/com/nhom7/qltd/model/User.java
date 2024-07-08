@@ -42,6 +42,10 @@ public class User implements UserDetails {
     private List<HopDongVay> hopDongVays;
     @OneToMany(mappedBy = "user")
     private List<HopDongMoThe> hopDongMoThes;
+    @OneToMany(mappedBy = "user")
+    private List<TinTuc> tinTucs;
+    @OneToMany(mappedBy = "user")
+    private List<ChatMessage> messages;
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),

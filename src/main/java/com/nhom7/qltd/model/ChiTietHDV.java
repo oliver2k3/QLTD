@@ -3,6 +3,7 @@ package com.nhom7.qltd.model;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -36,9 +37,9 @@ public class ChiTietHDV {
     @Column(name = "ConLai")
     private float conLai;
     @Column(name = "LastPayment")
-    private Date ngayTraGanNhat;
+    private LocalDateTime ngayTraGanNhat;
     @Column(name = "NextPayment")
-    private Date ngayTraTiepTheo;
+    private LocalDateTime ngayTraTiepTheo;
     @Column(name = "To_Bank")
     private String tenNganHang;
     @Column(name = "AccountNumber")
@@ -46,5 +47,7 @@ public class ChiTietHDV {
     @Column(name = "AccountName")
     private String tenTaiKhoan;
     @Column(name = "NgayHetHan")
-    private Date ngayHetHan;
+    private LocalDateTime ngayHetHan;
+    @Column(name = "SotienKinay")
+    private float soTienKinay;
 }

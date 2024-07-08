@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -34,7 +35,9 @@ public class TinTuc {
     @Column(name = "paragraph4")
     private String paragraph4;
     @Column(name = "TimeUpload")
-    private Date timeUpload;
+    private LocalDateTime timeUpload;
+    @Column(name = "TimeActive")
+    private LocalDateTime timeActive;
     @Column(name = "hide")
     private boolean hide;
     @OneToMany(mappedBy = "news")
@@ -42,5 +45,7 @@ public class TinTuc {
     @ManyToOne
     @JoinColumn(name = "category_id", referencedColumnName = "ID")
     private TinTucCategory category;
-
+    @ManyToOne
+    @JoinColumn(name = "uploadby", referencedColumnName = "user_name")
+    private User user;
 }

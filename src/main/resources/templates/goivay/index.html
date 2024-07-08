@@ -46,9 +46,9 @@
                                     <i class="flaticon-online-money"></i>
                                 </div>
                             </a>
-                            <h3><a asp-controller="GoiVay" asp-action="Details" asp-route-id="@item.Id" th:text="${goivay.tenGoiVay}"></a></h3>
+                            <h3><a th:href="@{/goivay/detail/{id}(id=${goivay.maGoiVay})}" th:text="${goivay.tenGoiVay}"></a></h3>
                             <p th:text="${goivay.moTa1}"></p>
-                            <a asp-controller="GoiVay" asp-action="Details" asp-route-id="@item.Id" class="pylon-icon-right-arrow service-one__link"></a><!-- /.service-one__link -->
+                            <a th:href="@{/goivay/detail/{id}(id=${goivay.maGoiVay})}" class="pylon-icon-right-arrow service-one__link"></a><!-- /.service-one__link -->
                         </div><!-- /.service-one__content -->
                     </div><!-- /.service-one__card -->
                 </div><!-- /.col-lg-4 col-md-6 mb-40 -->

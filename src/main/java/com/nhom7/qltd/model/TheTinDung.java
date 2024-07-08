@@ -31,5 +31,4 @@ public class TheTinDung {
     @Column(name = "description6")
     private String moTa6;
 
-
 }

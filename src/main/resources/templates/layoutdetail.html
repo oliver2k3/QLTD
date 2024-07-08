@@ -67,9 +67,9 @@
 
                     </li>
                     <li class="dropdown">
-                        <a asp-action="index" asp-controller="about">Giới Thiệu</a>
+                        <a  th:href="@{/about}">Giới Thiệu</a>
                         <ul>
-                            <li><a asp-action="index" asp-controller="about">Tổng quan</a></li>
+                            <li><a th:href="@{/about}">Tổng quan</a></li>
                             <li><a asp-action="Team" asp-controller="about">Nhân sự</a></li>
                         </ul>
                     </li>
@@ -77,27 +77,27 @@
                         <a asp-action="Index" asp asp-controller="GoiVay">Dịch Vụ</a>
                         <ul>
                             <li><a href="/goivay">Gói Vay</a></li>
-                            <li><a asp-action="Index"  asp-controller="Card">Thẻ Tín Dụng</a></li>
+                            <li><a th:href="@{/card}">Thẻ Tín Dụng</a></li>
 
                         </ul>
                     </li>
 
                     <li class="dropdown">
-                        <a asp-action="Index" asp-controller="Tintuc">Tin Tức</a>
+                        <a th:href="@{/tintuc}">Tin Tức</a>
 
                     </li>
 
                     <li class="dropdown" sec:authorize="isAuthenticated()">
-                        <a href="/User/profile/@userid">Tài Khoản</a>
+                        <a th:href="@{/user/profile}">Tài Khoản</a>
                         <ul>
-                            <li><a asp-action="GoiVay"  asp asp-controller="User">Gói Vay</a></li>
+                            <li><a th:href="@{/user/hopdongvay}">Hợp đồng vay</a></li>
                             <li><a asp-action="Card" asp asp-controller="User">Thẻ Tín Dụng</a></li>
 
                         </ul>
                     </li>
 
 
-                    <li><a asp-action="Index" asp-controller="Contact">Liên Hệ</a></li>
+                    <li><a th:href="@{/contact}">Liên Hệ</a></li>
 
                     <li class="drop-down" sec:authorize="!isAuthenticated()">
                         <a  href="/login">Login</a>

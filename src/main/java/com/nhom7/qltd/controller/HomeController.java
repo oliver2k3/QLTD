@@ -1,7 +1,9 @@
 package com.nhom7.qltd.controller;
 
+import com.nhom7.qltd.model.Contact;
 import com.nhom7.qltd.model.User;
 import com.nhom7.qltd.service.GoivayService;
+import com.nhom7.qltd.service.HomeService;
 import com.nhom7.qltd.service.UserService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -25,9 +27,12 @@ public class HomeController {
     private final GoivayService goivayService;
     @Autowired
     private final UserService userService;
-    public HomeController(GoivayService goivayService, UserService userService) {
+    @Autowired
+    private  final HomeService homeService;
+    public HomeController(GoivayService goivayService, UserService userService, HomeService homeService) {
         this.goivayService = goivayService;
         this.userService = userService;
+        this.homeService = homeService;
     }
 
     @GetMapping("")
@@ -37,7 +42,7 @@ public class HomeController {
     }
     @GetMapping("/home")
     public String home2() {
-        return "layout";
+        return "home/chatt";
     }
     @GetMapping("/login")
     public String login() {
@@ -77,5 +82,30 @@ public class HomeController {
         userService.save(user); // Lưu người dùng vào cơ sở dữ liệu
         userService.setDefaultRole(user.getUsername()); // Gán vai trò mặc định cho người dùng
         return "redirect:/login"; // Chuyển hướng người dùng tới trang "login"
+    }
+    @GetMapping("/about")
+    public String about() {
+        return "home/about";
+    }
+    @GetMapping("/contact")
+    public String contact(Model model) {
+        model.addAttribute("contact", new Contact());
+        return "home/contact";
+    }
+    @PostMapping("/contact")
+    public String contact(@Valid @ModelAttribute("contact") Contact contact,
+                          @NotNull BindingResult bindingResult,
+                          Model model) {
+        if (bindingResult.hasErrors()) {
+            var errors = bindingResult.getAllErrors()
+                    .stream()
+                    .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                    .toArray(String[]::new);
+            model.addAttribute("errors", errors);
+            return "home/contact";
+        }
+        homeService.addContact(contact);
+        // Gửi email
+        return "redirect:/contact";
     }
 }

@@ -1,7 +1,6 @@
 package com.nhom7.qltd.service;
 
 import com.nhom7.qltd.model.ChiTietHDV;
-import com.nhom7.qltd.model.GoiVay;
 import com.nhom7.qltd.model.HopDongVay;
 import com.nhom7.qltd.repository.CTHDVRepository;
 import com.nhom7.qltd.repository.HopdongvayRepository;
@@ -17,6 +16,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -26,7 +26,7 @@ public class HopdongvayService {
     @Autowired
     private  final HopdongvayRepository hopdongvayRepository;
    @Autowired
-   private CTHDVRepository chiTietHDVRepository;
+   private final CTHDVRepository chiTietHDVRepository;
     public HopDongVay addHopdongvay(HopDongVay hopDongVay) {
         return hopdongvayRepository.save(hopDongVay);
     }
@@ -35,7 +35,7 @@ public class HopdongvayService {
         if (!CCCD1.isEmpty()) {
             try
             {
-                Path dirImages = Paths.get("static/images/hopdongvay");
+                Path dirImages = Paths.get("static/Images/hopdongvay");
                 if (!Files.exists(dirImages)) {
                     Files.createDirectories(dirImages);
                 }
@@ -54,7 +54,7 @@ public class HopdongvayService {
         if (!CCCD2.isEmpty()) {
             try
             {
-                Path dirImages = Paths.get("static/images/hopdongvay");
+                Path dirImages = Paths.get("static/Images/hopdongvay");
                 if (!Files.exists(dirImages)) {
                     Files.createDirectories(dirImages);
                 }
@@ -92,6 +92,18 @@ public class HopdongvayService {
     }
 
     public List<HopDongVay> getAllHopdongvayByUser(String username) {
-        return hopdongvayRepository.findAllByUser_Username(username);
+        return hopdongvayRepository.findAllByUser_UsernameOrderByIdDesc(username);
+    }
+    public List<HopDongVay> getAllHopdongvay() {
+        return hopdongvayRepository.findAll();
+    }
+
+    public Optional<HopDongVay> getHopdongvayById(Integer hdvId) {
+        return hopdongvayRepository.findById(hdvId);
+    }
+
+
+    public void updateHopdongvay(HopDongVay hopDongVay) {
+        hopdongvayRepository.save(hopDongVay);
     }
 }

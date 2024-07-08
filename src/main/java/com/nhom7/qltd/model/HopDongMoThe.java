@@ -2,9 +2,11 @@ package com.nhom7.qltd.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -28,7 +30,7 @@ public class HopDongMoThe {
     @NotBlank(message = "Vui lòng nhập địa chỉ")
     private String address;
     @Column(name = "salary", nullable = false)
-    @NotBlank(message = "Vui lòng nhập mức lương")
+    @NotNull(message = "Vui lòng nhập mức lương")
     private float salary;
     @Column(name = "maritalStatus")
     private String maritalStatus;
@@ -39,7 +41,7 @@ public class HopDongMoThe {
     @Column(name = "IndustryPosition")
     private String industryPosition;
     @Column(name = "BirthDay")
-    private Date birthDay;
+    private LocalDateTime birthDay;
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "ID")
     private User user;
@@ -49,7 +51,12 @@ public class HopDongMoThe {
     @ManyToOne
     @JoinColumn(name = "delivery_id", referencedColumnName = "ID")
     private Delivery delivery;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private ChiTietMoThe chiTietMoThe;
-
+    @Column(name = "CCCD_Image1")
+    private String cccdImage1;
+    @Column(name = "CCCD_Image2")
+    private String cccdImage2;
+    @Column(name = "document_file")
+    private String documentFile;
 }

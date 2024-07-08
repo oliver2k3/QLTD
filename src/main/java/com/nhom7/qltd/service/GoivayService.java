@@ -3,7 +3,6 @@ package com.nhom7.qltd.service;
 import com.nhom7.qltd.model.GoiVay;
 import com.nhom7.qltd.repository.GoivayRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,9 +25,7 @@ public class GoivayService {
     public List<GoiVay> getAllGoivay() {
         return goivayRepository.findAll();
     }
-    public Optional<GoiVay> getCourseById(int id) {
-        return goivayRepository.findById(id);
-    }
+
     public GoiVay addGoivay(GoiVay goiVay) {
         return goivayRepository.save(goiVay);
     }
@@ -43,7 +40,7 @@ public class GoivayService {
         if (!imageProduct.isEmpty()) {
             try
             {
-                Path dirImages = Paths.get("static/images/goivay");
+                Path dirImages = Paths.get("static/Images/goivay");
                 if (!Files.exists(dirImages)) {
                     Files.createDirectories(dirImages);
                 }
@@ -62,3 +59,39 @@ public class GoivayService {
         return goivayRepository.findById(id);
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

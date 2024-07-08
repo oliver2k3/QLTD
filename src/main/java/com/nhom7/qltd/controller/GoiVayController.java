@@ -1,9 +1,6 @@
 package com.nhom7.qltd.controller;
 
-import com.nhom7.qltd.model.ChiTietHDV;
-import com.nhom7.qltd.model.GoiVay;
-import com.nhom7.qltd.model.HopDongVay;
-import com.nhom7.qltd.model.User;
+import com.nhom7.qltd.model.*;
 import com.nhom7.qltd.service.GoivayService;
 import com.nhom7.qltd.service.HopdongvayService;
 import com.nhom7.qltd.service.UserService;
@@ -65,6 +62,9 @@ public class GoiVayController {
         User user = userService.findByUsername(username)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid User Id:" + username));
        hopDongVay.setUser(user);
+        Status newStatus = new Status();
+        newStatus.setId(1);
+        hopDongVay.setStatus(newStatus);
         hopdongvayService.updateCCCD1(hopDongVay, CCCD1);
         hopdongvayService.updateCCCD2(hopDongVay, CCCD2);
         hopdongvayService.updatedocfile(hopDongVay, docfile);
@@ -72,9 +72,33 @@ public class GoiVayController {
         ChiTietHDV chiTietHDV = hopDongVay.getCT_HDV();
         chiTietHDV.setHopDongVay(hopDongVay);
         hopDongVay.setCT_HDV(chiTietHDV);
+        float interest =  chiTietHDV.getGoiVay().getLaiSuatCoBan();
+        float interest2 = chiTietHDV.getGoiVay().getLaiSuat2();
+        float interest3 =chiTietHDV.getGoiVay().getLaiSuat3();
+        if(chiTietHDV.getThoiHan() >= 1 && chiTietHDV.getThoiHan() <= 11)
+        {
+            chiTietHDV.setLaiSuat(interest);
+        }
+        else if(chiTietHDV.getThoiHan() >= 12 && chiTietHDV.getThoiHan() <= 17)
+        {
+            chiTietHDV.setLaiSuat(interest2);
+        }
+        else if(chiTietHDV.getThoiHan() >= 18 && chiTietHDV.getThoiHan() <= 24)
+        {
+            chiTietHDV.setLaiSuat(interest3);
+        }
+        float monthlyInterest =   (chiTietHDV.getLaiSuat() / 100 / 12);
+        float tongLai = chiTietHDV.getSoTien() * monthlyInterest * chiTietHDV.getThoiHan();
+        float tongTien = chiTietHDV.getSoTien() + tongLai;
+        float emi = tongTien / chiTietHDV.getThoiHan();
+        chiTietHDV.setTongLai(tongLai);
+        chiTietHDV.setTongTien(tongTien);
+        chiTietHDV.setEmi(emi);
+        chiTietHDV.setDaTra(0);
+        chiTietHDV.setConLai(tongTien);
         hopdongvayService.addChiTietHDV(chiTietHDV);
 
-        return "redirect:/admin/goivay";
+        return "redirect:/user/hopdongvay";
 
     }
 

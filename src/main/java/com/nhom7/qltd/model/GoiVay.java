@@ -21,11 +21,11 @@ public class GoiVay {
     @NotBlank(message = "Vui lòng nhập tên gói vay")
     private String tenGoiVay;
     @Column(name = "BaseInterestRate", nullable = false)
-    private double laiSuatCoBan;
+    private float laiSuatCoBan;
     @Column(name = "InterestRate2")
-    private double laiSuat2;
+    private float laiSuat2;
     @Column(name = "InterestRate3")
-    private double laiSuat3;
+    private float laiSuat3;
     @Column(name = "description1", nullable = false)
     @NotBlank(message = "Vui lòng nhập mô tả 1")
     private String moTa1;

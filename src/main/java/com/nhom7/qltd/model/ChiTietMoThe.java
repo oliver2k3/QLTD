@@ -3,6 +3,7 @@ package com.nhom7.qltd.model;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -35,5 +36,10 @@ public class ChiTietMoThe {
     private float daSuDung;
     @Column(name = "GioiHan")
     private float gioiHan;
+    @Column(name = "PaymentDate")
+    private LocalDateTime paymentDate;
+    @Column(name = "NextPayment")
+    private LocalDateTime nextPaymentTime;
+
 
 }
