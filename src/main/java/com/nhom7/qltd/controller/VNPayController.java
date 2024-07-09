@@ -100,6 +100,15 @@ public class VNPayController {
             chiTietMoThe.setNextPaymentTime(chiTietMoThe.getNextPaymentTime().plusMonths(1));
             chiTietMoTheService.updateChiTietMoThe(chiTietMoThe);
         }
+        String orderInfo = request.getParameter("vnp_OrderInfo");
+        String paymentTime = request.getParameter("vnp_PayDate");
+        String transactionId = request.getParameter("vnp_TransactionNo");
+        String totalPrice = request.getParameter("vnp_Amount");
+
+        model.addAttribute("orderId", orderInfo);
+        model.addAttribute("totalPrice", totalPrice);
+        model.addAttribute("paymentTime", paymentTime);
+        model.addAttribute("transactionId", transactionId);
         return paymentStatus == 1 ? "Vnpay/ordersuccess" : "Vnpay/orderfail";
     }
 

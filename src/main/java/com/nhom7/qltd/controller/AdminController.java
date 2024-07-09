@@ -2,6 +2,7 @@ package com.nhom7.qltd.controller;
 
 import com.nhom7.qltd.model.*;
 import com.nhom7.qltd.service.*;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
@@ -42,6 +47,10 @@ public class AdminController {
     private StatusService statusService;
     @Autowired
     private ChiTietHDVService chiTietHDVService;
+    @Autowired
+    private HopDongMoTheService hopDongMoTheService;
+    @Autowired
+    private ChiTietMoTheService chiTietMoTheService;
     public AdminController(GoivayService goivayService, CategoryService categoryService, TinTucService tinTucService, TinTucCategoryService tinTucCategoryService, CardService cardService, com.nhom7.qltd.service.UserService userService) {
         this.goivayService = goivayService;
         this.categoryService = categoryService;
@@ -55,8 +64,26 @@ public class AdminController {
         return "layoutadmin";
     }
     @GetMapping("/hopdongvay")
-    public String goivay(Model model) {
+    public String hopdongvay(Model model) {
         model.addAttribute("hopdongvays", hopdongvayService.getAllHopdongvay());
+        return "admin/hopdongvay/index";
+    }
+    @GetMapping("/hopdongvay1")
+    public String hopdongvaychuaxacnhan(Model model) {
+
+        model.addAttribute("hopdongvays", hopdongvayService.getHDVchuaxacnhan());
+        return "admin/hopdongvay/index";
+    }
+    @GetMapping("/hopdongvay2")
+    public String hopdongvaychuathanhtoan(Model model) {
+
+        model.addAttribute("hopdongvays", hopdongvayService.getHDVchuathanhtoan());
+        return "admin/hopdongvay/index";
+    }
+    @GetMapping("/hopdongvay3")
+    public String hopdongvaydatuchoi(Model model) {
+
+        model.addAttribute("hopdongvays", hopdongvayService.getHDVdatuchoi());
         return "admin/hopdongvay/index";
     }
     @GetMapping("/goivay/add")
@@ -74,6 +101,7 @@ public class AdminController {
         goivayService.addGoivay(goiVay);
         return "redirect:/admin/goivay";
     }
+
     @GetMapping("/tintuc/add")
     public String showAddFormTinTuc(Model model) {
         model.addAttribute("tintucs", new TinTuc());;
@@ -117,6 +145,7 @@ public class AdminController {
         cardService.addCard(card);
         return "redirect:/admin/card";
     }
+
     @PostMapping("/hopdongvay/xacnhan/{hdvId}")
     public String xacnhan(@PathVariable Integer hdvId) {
         HopDongVay hopDongVay = hopdongvayService.getHopdongvayById(hdvId)
@@ -139,5 +168,111 @@ public class AdminController {
         hopDongVay.setStatus(newStatus);
         hopdongvayService.updateHopdongvay(hopDongVay);
         return "redirect:/admin/hopdongvay";
+    }
+    @PostMapping("/hopdongvay/editstatus/{id}")
+    public String editstatus(@PathVariable Integer id, @RequestParam Integer status) {
+        HopDongVay hopDongVay = hopdongvayService.getHopdongvayById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid User Id:" + id));
+        Status newStatus = statusService.getStatusById(status);
+        hopDongVay.setStatus(newStatus);
+        hopdongvayService.updateHopdongvay(hopDongVay);
+        return "redirect:/admin/hopdongvay";
+    }
+    @GetMapping("/download/{docfile}")
+    public void downloadFile(HttpServletResponse response, @PathVariable String docfile) {
+        // Base directory where the files are located
+        String baseDir = "static/files/hopdongvay/";
+
+        // Construct the file path
+        Path filePath = Paths.get(baseDir + docfile);
+
+        // Set the content type and header for file download
+        response.setContentType("application/octet-stream");
+        response.setHeader("Content-Disposition", "attachment; filename=\"" + filePath.getFileName().toString() + "\"");
+
+        // Read the file and write it to the response's output stream
+        try {
+            Files.copy(filePath, response.getOutputStream());
+            response.getOutputStream().flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Handle the error here
+        }
+    }
+    @GetMapping("/hopdongmothe")
+    public String hopdongmothe(Model model) {
+        model.addAttribute("hopdongmothes", hopDongMoTheService.getAllHDMT());
+        return "admin/hopdongmothe/index";
+    }
+    @GetMapping("/hopdongmothe1")
+    public String hopdongmothechuaxacnhan(Model model) {
+
+        model.addAttribute("hopdongmothes", hopDongMoTheService.getHDMTchuaxacnhan());
+        return "admin/hopdongmothe/index";
+    }
+    @GetMapping("/hopdongmothe2")
+    public String hopdongmothechuathanhtoan(Model model) {
+
+        model.addAttribute("hopdongmothes", hopDongMoTheService.getHDMTchuathanhtoan());
+        return "admin/hopdongmothe/index";
+    }
+    @GetMapping("/hopdongmothe3")
+    public String hopdongmothedatuchoi(Model model) {
+
+        model.addAttribute("hopdongmothes", hopDongMoTheService.getHDMTdatuchoi());
+        return "admin/hopdongmothe/index";
+    }
+    @PostMapping("/hopdongmothe/xacnhan/{hdvId}")
+    public String xacnhan2(@PathVariable Integer hdvId) {
+        HopDongMoThe hopDongMoThe = hopDongMoTheService.getHopDongMoTheById(hdvId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid User Id:" + hdvId));
+        ChiTietMoThe chiTietMoThe = chiTietMoTheService.getChiTietMoTheByHDMTId(hdvId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid User Id:" + hdvId));
+        Status newStatus = statusService.getStatusById(2);
+        hopDongMoThe.setStatus(newStatus);
+        chiTietMoThe.setNextPaymentTime(LocalDateTime.now().plusMonths(1));
+
+        chiTietMoTheService.updateChiTietMoThe(chiTietMoThe);
+        hopDongMoTheService.updateHDMT(hopDongMoThe);
+        return "redirect:/admin/hopdongmothe";
+    }
+    @PostMapping("/hopdongmothe/tuchoi/{hdvId}")
+    public String tuchoi2(@PathVariable Integer hdvId) {
+        HopDongMoThe hopDongMoThe = hopDongMoTheService.getHopDongMoTheById(hdvId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid User Id:" + hdvId));
+        Status newStatus = statusService.getStatusById(5);
+        hopDongMoThe.setStatus(newStatus);
+        hopDongMoTheService.updateHDMT(hopDongMoThe);
+        return "redirect:/admin/hopdongmothe";
+    }
+    @PostMapping("/hopdongmothe/editstatus/{id}")
+    public String editstatus2(@PathVariable Integer id, @RequestParam Integer status) {
+        HopDongMoThe hopDongMoThe = hopDongMoTheService.getHopDongMoTheById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid User Id:" + id));
+        Status newStatus = statusService.getStatusById(status);
+        hopDongMoThe.setStatus(newStatus);
+        hopDongMoTheService.updateHDMT(hopDongMoThe);
+        return "redirect:/admin/hopdongmothe";
+    }
+    @GetMapping("/download2/{docfile}")
+    public void downloadFile2(HttpServletResponse response, @PathVariable String docfile) {
+        // Base directory where the files are located
+        String baseDir = "static/files/hopdongmothe/";
+
+        // Construct the file path
+        Path filePath = Paths.get(baseDir + docfile);
+
+        // Set the content type and header for file download
+        response.setContentType("application/octet-stream");
+        response.setHeader("Content-Disposition", "attachment; filename=\"" + filePath.getFileName().toString() + "\"");
+
+        // Read the file and write it to the response's output stream
+        try {
+            Files.copy(filePath, response.getOutputStream());
+            response.getOutputStream().flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Handle the error here
+        }
     }
 }

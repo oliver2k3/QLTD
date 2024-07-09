@@ -103,48 +103,8 @@
 </head>
 <body>
 <div layout:fragment="content">
-    <!--    <div class="contracts-container">-->
-    <!--        <h1>Loan Contracts</h1>-->
-    <!--        <table>-->
-    <!--            <thead>-->
-    <!--            <tr>-->
-    <!--                <th>ID</th>-->
-    <!--                <th>Loan Amount</th>-->
-    <!--                <th>Interest Rate</th>-->
-    <!--                <th>Loan Term</th>-->
-    <!--                <th>Total Payment</th>-->
-    <!--                <th>Total Interest</th>-->
-    <!--                <th>Paid</th>-->
-    <!--                <th>Remaining</th>-->
-    <!--                <th>Last Payment</th>-->
-    <!--                <th>Next Payment</th>-->
-    <!--                <th>Bank</th>-->
-    <!--                <th>Account Number</th>-->
-    <!--                <th>Account Name</th>-->
-    <!--                <th>Expiration Date</th>-->
-    <!--            </tr>-->
-    <!--            </thead>-->
-    <!--            <tbody>-->
-    <!--            <tr th:each="hopdongvay : ${hopdongvays}">-->
-    <!--                <td th:text="${hopdongvay.id}"></td>-->
-    <!--                <td th:text="${hopdongvay.CT_HDV.soTien}"></td>-->
-    <!--                <td th:text="${hopdongvay.CT_HDV.laiSuat}"></td>-->
-    <!--                <td th:text="${hopdongvay.CT_HDV.thoiHan}"></td>-->
-    <!--                <td th:text="${hopdongvay.CT_HDV.tongTien}"></td>-->
-    <!--                <td th:text="${hopdongvay.CT_HDV.tongLai}"></td>-->
-    <!--                <td th:text="${hopdongvay.CT_HDV.daTra}"></td>-->
-    <!--                <td th:text="${hopdongvay.CT_HDV.conLai}"></td>-->
-    <!--                <td th:text="${hopdongvay.CT_HDV.ngayTraGanNhat}"></td>-->
-    <!--                <td th:text="${hopdongvay.CT_HDV.ngayTraTiepTheo}"></td>-->
-    <!--                <td th:text="${hopdongvay.CT_HDV.tenNganHang}"></td>-->
-    <!--                <td th:text="${hopdongvay.CT_HDV.soTaiKhoan}"></td>-->
-    <!--                <td th:text="${hopdongvay.CT_HDV.tenTaiKhoan}"></td>-->
-    <!--                <td th:text="${hopdongvay.CT_HDV.ngayHetHan}"></td>-->
-    <!--            </tr>-->
-    <!--            </tbody>-->
-    <!--        </table>-->
-    <!--    </div>-->
-    <h2 class="text-3xl font-bold mb-4">Loan Contracts</h2>
+
+    <h2 class="text-3xl font-bold mb-4">Hợp đồng vay</h2>
     <div  th:each="hopdongvay : ${hopdongvays}" class="bg-background text-primary-foreground dark:bg-primary dark:text-primary-foreground p-6 border border-gray-200 rounded-lg my-4">
 
 
@@ -159,6 +119,7 @@
                     <th class="py-3 px-4 font-semibold text-card dark:text-card-foreground">Tổng tiền lãi</th>
                     <th class="py-3 px-4 font-semibold text-card dark:text-card-foreground">Tổng tiền phải trả</th>
                     <th class="py-3 px-4 font-semibold text-card dark:text-card-foreground">Khoản thanh toán hàng kì</th>
+
                 </tr>
                 </thead>
                 <tbody>
@@ -193,10 +154,10 @@
                 <tr class="border-b border-card dark:border-card-foreground">
                     <td class="py-3 px-4" th:text="${hopdongvay.CT_HDV.daTra}"></td>
                     <td class="py-3 px-4" th:text="${hopdongvay.CT_HDV.conLai}">0</td>
-                    <td class="py-3 px-4" th:text="${hopdongvay.CT_HDV.ngayTraGanNhat}"></td>
-                    <td class="py-3 px-4" th:text="${hopdongvay.CT_HDV.ngayTraTiepTheo}"></td>
+                    <td class="py-3 px-4" th:text="${#temporals.format(hopdongvay.getCT_HDV().ngayTraGanNhat, 'dd-MM-yyyy')}"></td>
+                    <td class="py-3 px-4" th:text="${#temporals.format(hopdongvay.getCT_HDV().ngayTraTiepTheo, 'dd-MM-yyyy')}"></td>
                     <td class="py-3 px-4" th:text="${hopdongvay.CT_HDV.soTienKinay}"></td>
-                    <td class="py-3 px-4" th:text="${hopdongvay.CT_HDV.ngayHetHan}"></td>
+                    <td class="py-3 px-4" th:text="${#temporals.format(hopdongvay.getCT_HDV().ngayHetHan, 'dd-MM-yyyy')}"></td>
                 </tr>
                 </tbody>
             </table>
@@ -207,13 +168,57 @@
                 <thead>
                 <tr class="w-full bg-card dark:bg-card-foreground text-left">
                     <th class="py-3 px-4 font-semibold text-card dark:text-card-foreground">Tên khách hàng</th>
-                    <th class="py-3 px-4 font-semibold text-card dark:text-card-foreground">Trạng thái hợp đồng</th>
+                    <th class="py-3 px-4 font-semibold text-card dark:text-card-foreground">Địa chỉ Email</th>
+                    <th class="py-3 px-4 font-semibold text-card dark:text-card-foreground">Số điện thoại</th>
+                    <th class="py-3 px-4 font-semibold text-card dark:text-card-foreground">Địa chỉ</th>
+                    <th class="py-3 px-4 font-semibold text-card dark:text-card-foreground">Công việc</th>
+                    <th class="py-3 px-4 font-semibold text-card dark:text-card-foreground">Mức lương</th>
+                    <th class="py-3 px-4 font-semibold text-card dark:text-card-foreground">Ngày sinh</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr class="border-b border-card dark:border-card-foreground">
                     <td class="py-3 px-4" th:text="${hopdongvay.name}"></td>
+                    <td class="py-3 px-4" th:text="${hopdongvay.email}"></td>
+                    <td class="py-3 px-4" th:text="${hopdongvay.phone}"></td>
+                    <td class="py-3 px-4" th:text="${hopdongvay.address}"></td>
+                    <td class="py-3 px-4" th:text="${hopdongvay.job}"></td>
+                    <td class="py-3 px-4" th:text="${hopdongvay.salary}"></td>
+                    <td class="py-3 px-4" th:text="${#temporals.format(hopdongvay.birthDay, 'dd-MM-yyyy')}"></td>
+
+
+
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="overflow-x-auto mt-4">
+            <div class="overflow-x-auto mt-4">
+                <div class="flex justify-around">
+                    <img th:src="@{${'/images/hopdongvay/' + hopdongvay.cccdImage1}}" style="max-width:400px" alt="CCCD trước" class="w-1/2 p-2">
+                    <img th:src="@{${'/images/hopdongvay/' + hopdongvay.cccdImage2}}" style="max-width:400px" alt="CCCD sau" class="w-1/2 p-2">
+                </div>
+            </div>
+        </div>
+        <div class="overflow-x-auto mt-4">
+            <table class="min-w-full bg-white dark:bg-card">
+                <thead>
+                <tr class="w-full bg-card dark:bg-card-foreground text-left">
+                    <th class="py-3 px-4 font-semibold text-card dark:text-card-foreground">Tên công ty</th>
+                    <th class="py-3 px-4 font-semibold text-card dark:text-card-foreground">Chức vụ</th>
+                    <th class="py-3 px-4 font-semibold text-card dark:text-card-foreground">Trạng thái hôn nhân</th>
+                    <th class="py-3 px-4 font-semibold text-card dark:text-card-foreground">Trạng thái hợp đồng</th>
+                    <th  th:if="${hopdongvay.status.id} != 1"  class="py-3 px-4 font-semibold text-card dark:text-card-foreground">Chỉnh sửa trạng thái</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="border-b border-card dark:border-card-foreground">
+                    <td class="py-3 px-4" th:text="${hopdongvay.industryName}"></td>
+                    <td class="py-3 px-4" th:text="${hopdongvay.industryPosition}"></td>
+                    <td class="py-3 px-4" th:text="${hopdongvay.maritalStatus}"></td>
                     <td class="py-3 px-4" th:text="${hopdongvay.status.name}"></td>
+
+
                     <td class="py-3 px-4" th:if="${hopdongvay.status.id} == 1"  >
                         <form  th:action="@{/admin/hopdongvay/xacnhan/{hdvId}(hdvId= ${hopdongvay.id})}" class="form-control" method="post">
                             <button type="submit" class="btn btn-primary">Xác nhận</button>
@@ -224,12 +229,38 @@
                             <button type="submit" class="btn btn-primary">Từ chối</button>
                         </form>
                     </td>
+                    <td class="py-3 px-4" th:if="${hopdongvay.status.id} != 1"  >
+                        <form  class="form-control"  th:action="@{/admin/hopdongvay/editstatus/{id}(id= ${hopdongvay.id})}" method="post">
+
+                            <div class="col-md-12">
+                                <label for="status" ></label>
+                                <select class="form-select" id="status" name="status">
+                                    <option value="1">Chờ xác nhận</option>
+                                    <option value="2">Đã xác nhận</option>
+                                    <option value="3">Chờ thanh toán</option>
+                                    <option value="4">Đã thanh toán</option>
+                                    <option value="5">Đã từ chối</option>
+                                </select>
+                            </div>
+                            <div class="col-md-12">
+                                <input type="submit" value="Submit" class="thm-btn">
+                            </div>
+                        </form>
+                    </td>
+                    <td class="py-3 px-4"  >
+                        <form  th:action="@{/admin/download/{docfile}(docfile= ${hopdongvay.documentFile})}" class="form-control" method="get">
+                            <button type="submit" class="btn btn-primary">Tải tài liệu</button>
+                        </form>
+                    </td>
 
                 </tr>
                 </tbody>
             </table>
         </div>
+
     </div>
+
+
 </div>
 </body>
 </html>

@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface HopdongvayRepository extends JpaRepository<HopDongVay, Integer> {
     List<HopDongVay> findAllByUser_UsernameOrderByIdDesc(String username);
+    List<HopDongVay> findAllByStatusIdOrderByIdDesc(int  statusid);
 }

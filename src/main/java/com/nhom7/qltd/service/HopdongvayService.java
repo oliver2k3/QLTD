@@ -97,7 +97,15 @@ public class HopdongvayService {
     public List<HopDongVay> getAllHopdongvay() {
         return hopdongvayRepository.findAll();
     }
-
+    public List<HopDongVay> getHDVchuaxacnhan() {
+        return hopdongvayRepository.findAllByStatusIdOrderByIdDesc(1);
+    }
+    public List<HopDongVay> getHDVchuathanhtoan() {
+        return hopdongvayRepository.findAllByStatusIdOrderByIdDesc(3);
+    }
+    public List<HopDongVay> getHDVdatuchoi() {
+        return hopdongvayRepository.findAllByStatusIdOrderByIdDesc(5);
+    }
     public Optional<HopDongVay> getHopdongvayById(Integer hdvId) {
         return hopdongvayRepository.findById(hdvId);
     }

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en"
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layoutdetail}"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<section layout:fragment="content" class="blog-details pt-100 pb-100">
+    <div class="container">
+        <div class="row">
+
+            <div class="col-lg-8" >
+                <h2 th:text="${post.title}"></h2>
+                <div class="blog-card__image">
+
+                    <span th:text="${#temporals.format(post.timeActive, 'dd-MM-yyyy')}"></span>
+                    <img th:src="@{${'/images/tintuc/' + post.image1}}" alt="">
+                </div><!-- /.blog-card__image -->
+                <div class="blog-card__meta">
+                    <a href="#"><i class="far fa-folder"></i>Investment</a>
+                    <a href="#"><i class="far fa-comments"></i>Comment</a>
+                    <a href="#"><i class="far fa-user"></i>Admin</a>
+                </div><!-- /.blog-card__meta -->
+                <div class="blog-details__content">
+
+                    <p th:text="${post.paragraph1}"></p>
+                    <p th:text="${post.paragraph2}"></p>
+
+                    <div class="blog-card__image-box">
+                        <div class="row">
+                            <div class="col-6">
+                                <img th:src="@{${'/images/tintuc/' + post.image2}}" style="max-width: 380px" alt="">
+                            </div><!--/.col-6-->
+                            <div class="col-6">
+                                <img th:src="@{${'/images/tintuc/' + post.image3}}" style="max-width: 380px" alt="">
+                            </div><!--/.col-6-->
+                        </div><!--/.row-->
+                    </div><!--/.blog-card__image-box-->
+
+                    <p th:text="${post.paragraph3}"></p>
+                    <p th:text="${post.paragraph4}"></p>
+                </div><!-- /.blog-details__content -->
+
+                <div class="blog-details__bottom">
+                    <div class="blog-details__tags">
+                        <span>
+                            <a href="#">Company</a>
+                            <a href="#">House Loan</a>
+                            <a href="#">IT Loan</a>
+                        </span>
+                    </div><!-- /.blog-details__tags -->
+                    <div class="blog-details__social team-details__social">
+                        <a href="#" class="fab fa-facebook-f"></a>
+                        <a href="#" class="fab fa-twitter"></a>
+                        <a href="#" class="fab fa-linkedin-in"></a>
+                    </div><!-- /.blog-details__social -->
+                </div><!-- /.blog-details__bottom -->
+                <section class="testimonials-one">
+                    <div class="container">
+                        <div class="block-title text-center">
+
+                            <h2>Bình luận bài viết</h2>
+                        </div><!-- /.block-title -->
+                        <div class="thm-swiper__slider swiper-container" data-swiper-options='{
+        "spaceBetween": 0,
+        "slidesPerView": 1,
+        "slidesPerGroup": 1,
+        "loop":true,
+        "autoplay": {
+            "delay": 5000
+        },
+        "pagination": {
+            "el": ".testimonials-one__swiper-pagination",
+            "type": "bullets",
+            "clickable": true
+        },
+        "breakpoints": {
+            "0": {
+                "spaceBetween": 0,
+                "slidesPerView": 1,
+                "slidesPerGroup": 1
+            },
+            "375": {
+                "spaceBetween": 0,
+                "slidesPerView": 1,
+                "slidesPerGroup": 1
+            },
+            "667": {
+                "spaceBetween": 30,
+                "slidesPerView": 1,
+                "slidesPerGroup": 1
+            },
+            "767": {
+                "spaceBetween": 30,
+                "slidesPerView": 1,
+                "slidesPerGroup": 1
+            },
+            "991": {
+                "spaceBetween": 30,
+                "slidesPerView": 2,
+                "slidesPerGroup": 2
+            },
+            "1199": {
+                "spaceBetween": 30,
+                "slidesPerView": 3,
+                "slidesPerGroup": 3
+            }
+        }}'>
+                            <div class="swiper-wrapper">
+                                <div class="swiper-slide" th:each=" comment : ${comments}">
+                                    <div class="testimonials-one__box">
+                                        <p><span th:text="${comment.content}"></span></p>
+                                        <h3 th:text="${comment.user.name}"></h3>
+                                        <span class="testi_sname" th:text="${#temporals.format(comment.timeUpload, 'dd-MM-yyyy')}"></span>
+                                    </div><!-- /.testimonials-one__box -->
+                                    <!-- /.testimonials-one__box-info -->
+                                </div><!-- /.swiper-slide -->
+                            </div><!-- /.swiper-wrapper -->
+
+                            <div class="testimonials-one__swiper-pagination swiper-pagination"></div><!-- /.testimonials-one__swiper-pagination swiper-pagination -->
+                        </div><!-- /.thm-swiper__slider -->
+                    </div><!-- /.container -->
+                </section>
+
+                <div class="blog-comment-form">
+                    <h2 class="blog-details__box-title">Leave A Reply</h2>
+                    <form th:action="@{/tintuc/comment/{id}(id= ${post.id})}"  method="post" class="contact-one__form">
+                        <p>Your email address will not be published. </p>
+                        <div class="row low-gutters">
+
+
+
+
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <textarea name="MessageContent" id="MessageContent" class="form-control contact-one__form-input" placeholder="Your Comment*"></textarea>
+                                </div>
+                            </div><!-- /.col-md-6 -->
+                        </div><!-- /.row -->
+                        <button class="thm-btn" type="submit">Post Comment</button>
+                    </form>
+                    <div class="col-lg-6 reviews_col">
+
+                    </div>
+
+                </div><!-- /.blog-comment -->
+            </div><!-- /.col-lg-8 -->
+            <div class="col-lg-4">
+                <div class="blog-sidebar">
+                    <div class="blog-sidebar__box blog-sidebar__search">
+                        <form class="search-form">
+                            <input type="text" placeholder="Search" class="search-field">
+                            <button type="submit" class="search-submit"><i class="fa fa-search"></i></button>
+                        </form>
+                    </div><!-- /.blog-sidebar__box -->
+                    <div class="blog-sidebar__box blog-sidebar__categories">
+                        <h3 class="blog-sidebar__box-title">Danh mục</h3>
+                        <ul class="list-unstyled">
+                            <li th:each="category: ${categories}">
+                                <a th:href="@{/tintuc/(categoryId=${category.id})}"><i class="far fa-arrow-right"></i><span th:text="${category.name}"></span></a>
+                                (1)
+                            </li>
+
+                        </ul>
+                    </div>
+                    </div>
+                    <div class="blog-sidebar__box blog-sidebar__post">
+                        <h3 class="blog-sidebar__box-title">Recent Posts</h3><!-- /.blog-sidebar__title -->
+                        <ul class="list-unstyled footer-widget__post-list">
+
+                            <li th:each="tintuc : ${news}">
+                                <img th:src="@{${'/images/tintuc/'+tintuc.image1}}" style="max-height:71px" alt="">
+                                <div class="footer-widget__post-list-content">
+                                    <span th:text="${#temporals.format(tintuc.timeActive, 'dd-MM-yyyy')}"></span>
+                                    <h3> <a th:href="@{/tintuc/detail/{id}(id= ${tintuc.id} )}"><i class="pylon-icon-right-arrow"></i><th:block th:text="${tintuc.title}"> </th:block></a></h3>
+                                </div><!-- /.footer-widget__post-content -->
+                            </li>
+
+
+                        </ul>
+
+                    </div><!-- /.blog-sidebar__box -->
+
+
+                    <div class="blog-sidebar__box blog-sidebar__call">
+                        <div class="service-sidebar__call">
+                            <div class="service-sidebar__call-bg" style="background-image: url(Layout/User/assets/images/services/service-sidebar-1-1.jpg);"></div><!-- /.service-sidebar__call-bg -->
+                            <i class="pylon-icon-tech-support"></i>
+                            <h3><a href="tel:(+01)123 456 7890">0812999999</a></h3>
+                            <div class="pylon-mail">
+                                <a href="mailto:info@company.com">info@company.com</a>
+                            </div>
+                            <p>We are here to help our customer any time. You can call on 24/7 To Answer Your Question.</p>
+                        </div>
+                    </div><!-- /.service-sidebar__call -->
+
+                </div><!-- /.blog-sidebar -->
+            </div><!-- /.col-lg-4 -->
+        </div><!-- /.row -->
+    </div><!-- /.container -->
+</section><!-- /.blog-details -->
+
+</body>
+</html>

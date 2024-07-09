@@ -35,7 +35,7 @@
                 <div class="col-lg-8"  >
                     <div class="blog-card" th:each="tintuc : ${news}">
                         <div class="blog-card__image">
-                            <span th:text="${tintuc.timeActive}"></span>
+                            <span  th:text="${#temporals.format(tintuc.timeActive, 'dd-MM-yyyy')}"></span>
                             <img th:src="@{${'images/tintuc/'+tintuc.image1}}" alt="">
                         </div><!-- /.blog-card__image -->
                         <div class="blog-card__content">
@@ -44,11 +44,11 @@
                                 <a ><i class="far fa-credit-card" th:text="${tintuc.category.name}"></i></a>
 
                             </div><!-- /.blog-card__meta -->
-                            <h3><a asp-controller="Tintuc" asp-action="Details" asp-route-id="@item.Id" th:text="${tintuc.title}"></a></h3>
+                            <h3><a th:href="@{/tintuc/detail/{id}(id= ${tintuc.id} )}" th:text="${tintuc.title}"></a></h3>
                             <p th:text="${tintuc.paragraph1}"> </p>
                             <div class="blog-card__bottom">
                                 <div class="blog-card-bottom-readmore">
-                                    <a asp-controller="Tintuc" asp-action="Details" asp-route-id="@item.Id"><i class="pylon-icon-right-arrow"></i>Chi tiết</a>
+                                    <a th:href="@{/tintuc/detail/{id}(id= ${tintuc.id} )}"><i class="pylon-icon-right-arrow"></i>Chi tiết</a>
                                 </div><!-- /.blog-card-bottom-readmore-->
                                 <span class="blog_comment">
                                     <a href="#"><i class="far fa-comments"></i>@item.Comments Comments</a>

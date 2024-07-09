@@ -30,6 +30,21 @@ public class HopDongMoTheService {
     public HopDongMoThe addHDMT(HopDongMoThe hopDongMoThe) {
         return hopDongMoTheRepository.save(hopDongMoThe);
     }
+    public  List<HopDongMoThe> getAllHDMT() {
+        return hopDongMoTheRepository.findAll();
+    }
+    public  List<HopDongMoThe> getHDMTchuaxacnhan() {
+        return hopDongMoTheRepository.findAllByStatusIdOrderByIdDesc(1);
+    }
+    public  List<HopDongMoThe> getHDMTchuathanhtoan() {
+        return hopDongMoTheRepository.findAllByStatusIdOrderByIdDesc(3);
+    }
+    public  List<HopDongMoThe> getHDMTdatuchoi() {
+        return hopDongMoTheRepository.findAllByStatusIdOrderByIdDesc(5);
+    }
+    public HopDongMoThe updateHDMT(HopDongMoThe hopDongMoThe) {
+        return hopDongMoTheRepository.save(hopDongMoThe);
+    }
     public void updateCCCD1(HopDongMoThe hopDongMoThe, MultipartFile CCCD1)
     {
         if (!CCCD1.isEmpty()) {

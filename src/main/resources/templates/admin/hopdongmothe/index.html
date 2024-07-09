@@ -2,7 +2,7 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layoutdetail}">
+      layout:decorate="~{layoutadmin2}">
 >
 <script th:src="@{https://cdn.tailwindcss.com?plugins=forms,typography}"></script>
 <script th:src="@{https://unpkg.com/unlazy@0.11.3/dist/unlazy.with-hashing.iife.js}" defer init></script>
@@ -146,7 +146,7 @@
                     <th class="py-3 px-4 font-semibold text-card dark:text-card-foreground">Loại thẻ</th>
                     <th class="py-3 px-4 font-semibold text-card dark:text-card-foreground">Ngày hết hạn</th>
                     <th class="py-3 px-4 font-semibold text-card dark:text-card-foreground">Tên khách hàng</th>
-                    <th class="py-3 px-4 font-semibold text-card dark:text-card-foreground">Trạng thái hợp đồng</th>
+
 
                 </tr>
                 </thead>
@@ -158,12 +158,8 @@
                     <td class="py-3 px-4" th:text="${hopdongmothe.chiTietMoThe.card.tenThe}"></td>
                     <td class="py-3 px-4" th:text="${hopdongmothe.chiTietMoThe.ngayHetHan}"></td>
                     <td class="py-3 px-4" th:text="${hopdongmothe.name}"></td>
-                    <td class="py-3 px-4" th:text="${hopdongmothe.status.name}"></td>
-                    <td class="py-3 px-4" th:if="${hopdongmothe.status.id} == 3"  >
-                        <form  th:action="@{/user/paymentmothe/{id}(id= ${hopdongmothe.id})}" class="form-control" method="post">
-                            <button type="submit" class="btn btn-primary">Thanh toán</button>
-                        </form>
-                    </td>
+
+
 
                 </tr>
                 </tbody>
@@ -174,16 +170,97 @@
             <table class="min-w-full bg-white dark:bg-card">
                 <thead>
                 <tr class="w-full bg-card dark:bg-card-foreground text-left">
+                    <th class="py-3 px-4 font-semibold text-card dark:text-card-foreground">Tên khách hàng</th>
+                    <th class="py-3 px-4 font-semibold text-card dark:text-card-foreground">Địa chỉ Email</th>
+                    <th class="py-3 px-4 font-semibold text-card dark:text-card-foreground">Số điện thoại</th>
+                    <th class="py-3 px-4 font-semibold text-card dark:text-card-foreground">Địa chỉ</th>
+                    <th class="py-3 px-4 font-semibold text-card dark:text-card-foreground">Công việc</th>
+                    <th class="py-3 px-4 font-semibold text-card dark:text-card-foreground">Mức lương</th>
+                    <th class="py-3 px-4 font-semibold text-card dark:text-card-foreground">Ngày sinh</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr class="border-b border-card dark:border-card-foreground">
+                    <td class="py-3 px-4" th:text="${hopdongmothe.name}"></td>
+                    <td class="py-3 px-4" th:text="${hopdongmothe.email}"></td>
+                    <td class="py-3 px-4" th:text="${hopdongmothe.phone}"></td>
+                    <td class="py-3 px-4" th:text="${hopdongmothe.address}"></td>
+                    <td class="py-3 px-4" th:text="${hopdongmothe.job}"></td>
+                    <td class="py-3 px-4" th:text="${hopdongmothe.salary}"></td>
+                    <td class="py-3 px-4" th:text="${#temporals.format(hopdongmothe.birthDay, 'dd-MM-yyyy')}"></td>
+
 
 
                 </tr>
                 </tbody>
             </table>
         </div>
+        <div class="overflow-x-auto mt-4">
+            <div class="overflow-x-auto mt-4">
+                <div class="flex justify-around">
+                    <img th:src="@{${'/images/hopdongmothe/' + hopdongmothe.cccdImage1}}" style="max-width:400px" alt="CCCD trước" class="w-1/2 p-2">
+                    <img th:src="@{${'/images/hopdongmothe/' + hopdongmothe.cccdImage2}}" style="max-width:400px" alt="CCCD sau" class="w-1/2 p-2">
+                </div>
+            </div>
+        </div>
+        <div class="overflow-x-auto mt-4">
+            <table class="min-w-full bg-white dark:bg-card">
+                <thead>
+                <tr class="w-full bg-card dark:bg-card-foreground text-left">
+                    <th class="py-3 px-4 font-semibold text-card dark:text-card-foreground">Tên công ty</th>
+                    <th class="py-3 px-4 font-semibold text-card dark:text-card-foreground">Chức vụ</th>
+                    <th class="py-3 px-4 font-semibold text-card dark:text-card-foreground">Trạng thái hôn nhân</th>
+                    <th class="py-3 px-4 font-semibold text-card dark:text-card-foreground">Trạng thái hợp đồng</th>
+                    <th  th:if="${hopdongmothe.status.id} != 1"  class="py-3 px-4 font-semibold text-card dark:text-card-foreground">Chỉnh sửa trạng thái</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="border-b border-card dark:border-card-foreground">
+                    <td class="py-3 px-4" th:text="${hopdongmothe.industryName}"></td>
+                    <td class="py-3 px-4" th:text="${hopdongmothe.industryPosition}"></td>
+                    <td class="py-3 px-4" th:text="${hopdongmothe.maritalStatus}"></td>
+                    <td class="py-3 px-4" th:text="${hopdongmothe.status.name}"></td>
+
+
+<!--                    <td class="py-3 px-4" th:if="${hopdongmothe.status.id} == 1"  >-->
+<!--                        <form  th:action="@{/admin/hopdongmothe/xacnhan/{hdvId}(hdvId= ${hopdongvay.id})}" class="form-control" method="post">-->
+<!--                            <button type="submit" class="btn btn-primary">Xác nhận</button>-->
+<!--                        </form>-->
+<!--                    </td>-->
+<!--                    <td class="py-3 px-4" th:if="${hopdongmothe.status.id} == 1"  >-->
+<!--                        <form  th:action="@{/admin/hopdongmothe/tuchoi/{hdvId}(hdvId= ${hopdongvay.id})}" class="form-control" method="post">-->
+<!--                            <button type="submit" class="btn btn-primary">Từ chối</button>-->
+<!--                        </form>-->
+<!--                    </td>-->
+                    <td class="py-3 px-4"  >
+                        <form  class="form-control"  th:action="@{/admin/hopdongmothe/editstatus/{id}(id= ${hopdongmothe.id})}" method="post">
+
+                            <div class="col-md-12">
+                                <label for="status" ></label>
+                                <select class="form-select" id="status" name="status">
+                                    <option value="1">Chờ xác nhận</option>
+                                    <option value="2">Đã xác nhận</option>
+                                    <option value="3">Chờ thanh toán</option>
+                                    <option value="4">Đã thanh toán</option>
+                                    <option value="5">Đã từ chối</option>
+                                </select>
+                            </div>
+                            <div class="col-md-12">
+                                <input type="submit" value="Submit" class="thm-btn">
+                            </div>
+                        </form>
+                    </td>
+                    <td class="py-3 px-4"  >
+                        <form  th:action="@{/admin/download2/{docfile}(docfile= ${hopdongmothe.documentFile})}" class="form-control" method="get">
+                            <button type="submit" class="btn btn-primary">Tải tài liệu</button>
+                        </form>
+                    </td>
+
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
     </div>
 </section>
 </body>

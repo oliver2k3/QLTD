@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -40,7 +41,7 @@ public class HopDongVay {
     @Column(name = "IndustryPosition")
     private String industryPosition;
     @Column(name = "BirthDay")
-    private Date birthDay;
+    private LocalDateTime birthDay;
     @Column(name = "CCCD_Image1")
     private String cccdImage1;
     @Column(name = "CCCD_Image2")
