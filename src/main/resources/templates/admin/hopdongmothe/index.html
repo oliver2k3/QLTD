@@ -127,9 +127,9 @@
                     <td class="py-3 px-4" th:text="${hopdongmothe.chiTietMoThe.soDu}"></td>
                     <td class="py-3 px-4" th:text="${hopdongmothe.chiTietMoThe.gioiHan}"></td>
                     <td class="py-3 px-4" th:text="${hopdongmothe.address}"></td>
-                    <td class="py-3 px-4" th:text="${hopdongmothe.chiTietMoThe.ngayMoThe}"></td>
-                    <td class="py-3 px-4" th:text="${hopdongmothe.chiTietMoThe.paymentDate}"></td>
-                    <td class="py-3 px-4" th:text="${hopdongmothe.chiTietMoThe.nextPaymentTime}"></td>
+                    <td class="py-3 px-4" th:text="${#temporals.format(hopdongmothe.chiTietMoThe.ngayMoThe, 'dd-MM-yyyy')}"></td>
+                    <td class="py-3 px-4" th:text="${#temporals.format(hopdongmothe.chiTietMoThe.paymentDate, 'dd-MM-yyyy')}"></td>
+                    <td class="py-3 px-4" th:text="${#temporals.format(hopdongmothe.chiTietMoThe.nextPaymentTime, 'dd-MM-yyyy')}"></td>
 
                 </tr>
                 </tbody>
@@ -156,7 +156,7 @@
                     <td class="py-3 px-4" th:text="${hopdongmothe.chiTietMoThe.soThe}">0</td>
                     <td class="py-3 px-4" th:text="${hopdongmothe.chiTietMoThe.ccv}"></td>
                     <td class="py-3 px-4" th:text="${hopdongmothe.chiTietMoThe.card.tenThe}"></td>
-                    <td class="py-3 px-4" th:text="${hopdongmothe.chiTietMoThe.ngayHetHan}"></td>
+                    <td class="py-3 px-4" th:text="${#temporals.format(hopdongmothe.chiTietMoThe.ngayHetHan, 'dd-MM-yyyy')}"></td>
                     <td class="py-3 px-4" th:text="${hopdongmothe.name}"></td>
 
 
@@ -248,6 +248,11 @@
                             <div class="col-md-12">
                                 <input type="submit" value="Submit" class="thm-btn">
                             </div>
+                        </form>
+                    </td>
+                    <td class="py-3 px-4" th:if="${hopdongmothe.chiTietMoThe.soThe} == null"  >
+                        <form  th:action="@{/admin/hopdongmothe/taothe/{id}(id= ${hopdongmothe.id})}" class="form-control" method="get">
+                            <button type="submit" class="btn btn-primary">Tạo thẻ</button>
                         </form>
                     </td>
                     <td class="py-3 px-4"  >

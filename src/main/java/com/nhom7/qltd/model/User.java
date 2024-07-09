@@ -45,7 +45,7 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user")
     private List<TinTuc> tinTucs;
     @OneToMany(mappedBy = "user")
-    private List<ChatMessage> messages;
+    private List<Message> messages;
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),

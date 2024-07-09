@@ -25,9 +25,9 @@ public class ChiTietMoThe {
     @Column(name = "SoThe")
     private String soThe;
     @Column(name = "NgayMoThe")
-    private Date ngayMoThe;
+    private LocalDateTime ngayMoThe;
     @Column(name = "NgayHetHan")
-    private Date ngayHetHan;
+    private LocalDateTime ngayHetHan;
     @Column(name = "SoDu")
     private float soDu;
     @Column(name = "CCV")

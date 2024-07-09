@@ -4,6 +4,7 @@ import com.nhom7.qltd.model.Contact;
 import com.nhom7.qltd.model.User;
 import com.nhom7.qltd.service.GoivayService;
 import com.nhom7.qltd.service.HomeService;
+import com.nhom7.qltd.service.TinTucService;
 import com.nhom7.qltd.service.UserService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -29,16 +30,24 @@ public class HomeController {
     private final UserService userService;
     @Autowired
     private  final HomeService homeService;
-    public HomeController(GoivayService goivayService, UserService userService, HomeService homeService) {
+    @Autowired
+    private final TinTucService tinTucService;
+    public HomeController(GoivayService goivayService, UserService userService, HomeService homeService, TinTucService tinTucService) {
         this.goivayService = goivayService;
         this.userService = userService;
         this.homeService = homeService;
+        this.tinTucService = tinTucService;
     }
 
     @GetMapping("")
     public String home(Model model) {
         model.addAttribute("goivays", goivayService.getAllGoivay());
+        model.addAttribute("tintucs", tinTucService.getTop3TinTuc());
         return "home/index";
+    }
+    @GetMapping("/chat")
+    public String chat() {
+        return "home/chat";
     }
     @GetMapping("/home")
     public String home2() {

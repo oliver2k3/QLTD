@@ -4,6 +4,7 @@ import com.nhom7.qltd.model.HopDongVay;
 import com.nhom7.qltd.model.TinTuc;
 import com.nhom7.qltd.repository.TintucRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,8 +24,14 @@ public class TinTucService {
     public List<TinTuc> getAllTinTuc(){
         return tinTucRepository.findAll();
     }
+    public List<TinTuc> getTop3TinTuc() {
+        return tinTucRepository.findTop3ByHideFalseOrderByTimeActiveDesc(PageRequest.of(0, 3));
+    }
     public List<TinTuc> getActiveNews(){
         return tinTucRepository.findByHideFalseOrderByTimeActiveDesc();
+    }
+    public List<TinTuc> getHideNews(){
+        return tinTucRepository.findByHideTrueOrderByTimeActiveDesc();
     }
     public TinTuc addTinTuc(TinTuc tinTuc) {
         return tinTucRepository.save(tinTuc);

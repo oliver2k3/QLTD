@@ -692,7 +692,30 @@
                 <h2 class="blog-title__h2">News & Articles</h2>
             </div><!-- /.block-title -->
             <div class="row">
-                @await Component.InvokeAsync("TinTuc")
+                <!--/*@thymesVar id="tintuc" type="com.nhom7.qltd.model.TinTuc"*/-->
+                <div th:each="tintuc : ${tintucs}" class="col-lg-4 wow fadeInUp" data-wow-duration="1500ms">
+                    <div class="blog-card">
+                        <div class="blog-card__image">
+                            <span th:text="${#temporals.format(tintuc.timeActive, 'dd-MM-yyyy')}"></span>
+                            <img th:src="@{${'/images/tintuc/' +tintuc.image1}}" style="max-width:400px; max-height:200px" alt="">
+                        </div><!-- /.blog-card__image -->
+                        <div class="blog-card__content">
+                            <div class="blog-card__meta">
+                                <a href="#" th:text="${tintuc.user.name}"><i class="far fa-user"></i></a>
+                                <a th:text="${tintuc.category.name}"><i class="far fa-credit-card"></i></a>
+                            </div><!-- /.blog-card__meta -->
+                            <h3><a th:href="@{/tintuc/detail/{id}(id= ${tintuc.id} )}" th:text="${tintuc.title}"></a></h3>
+                            <div class="blog-card__bottom">
+                                <div class="blog-card-bottom-readmore">
+                                    <a th:href="@{/tintuc/detail/{id}(id= ${tintuc.id} )}"><i class="pylon-icon-right-arrow"></i>Chi tiết</a>
+                                </div><!-- /.blog-card-bottom-readmore-->
+                                <span class="blog_comment">
+                        <a href="#"><i class="far fa-comments"></i>0 Comments</a>
+                    </span>
+                            </div><!-- /.blog-card__bottom -->
+                        </div><!-- /.blog-card__content -->
+                    </div><!-- /.blog-card -->
+                </div>
             </div><!-- /.row -->
         </div><!-- /.container -->
     </section><!-- /.blog-home -->

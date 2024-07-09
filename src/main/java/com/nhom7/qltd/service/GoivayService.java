@@ -35,6 +35,28 @@ public class GoivayService {
         }
         goivayRepository.deleteById(id);
     }
+    public GoiVay updateGoivay(GoiVay goiVay) {
+        GoiVay existingGoivay = goivayRepository.findById((int) goiVay.getMaGoiVay())
+                .orElseThrow(() -> new IllegalStateException("Product with ID " +
+                        goiVay.getMaGoiVay() + " does not exist."));
+
+
+        existingGoivay.setTenGoiVay(goiVay.getTenGoiVay());
+        existingGoivay.setLaiSuatCoBan(goiVay.getLaiSuatCoBan());
+        existingGoivay.setLaiSuat2(goiVay.getLaiSuat2());
+        existingGoivay.setLaiSuat3(goiVay.getLaiSuat3());
+        existingGoivay.setMoTa1(goiVay.getMoTa1());
+        existingGoivay.setMoTa2(goiVay.getMoTa2());
+        existingGoivay.setMoTa3(goiVay.getMoTa3());
+        existingGoivay.setMoTa4(goiVay.getMoTa4());
+        existingGoivay.setMoTa5(goiVay.getMoTa5());
+        existingGoivay.setMoTa6(goiVay.getMoTa6());
+        existingGoivay.setCategory(goiVay.getCategory());
+        existingGoivay.setImage(goiVay.getImage());
+
+
+        return goivayRepository.save(existingGoivay);
+    }
     public void updateImage(GoiVay newGoivay, MultipartFile imageProduct)
     {
         if (!imageProduct.isEmpty()) {

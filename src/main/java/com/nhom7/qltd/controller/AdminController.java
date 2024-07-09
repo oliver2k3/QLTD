@@ -20,7 +20,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.YearMonth;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -86,6 +88,11 @@ public class AdminController {
         model.addAttribute("hopdongvays", hopdongvayService.getHDVdatuchoi());
         return "admin/hopdongvay/index";
     }
+    @GetMapping("/goivay")
+    public String goivay(Model model) {
+        model.addAttribute("goivays", goivayService.getAllGoivay());
+        return "admin/goivay/index";
+    }
     @GetMapping("/goivay/add")
     public String showAddForm(Model model) {
         model.addAttribute("loans", new GoiVay());;
@@ -101,7 +108,39 @@ public class AdminController {
         goivayService.addGoivay(goiVay);
         return "redirect:/admin/goivay";
     }
-
+    @GetMapping("/goivay/edit/{id}")
+    public String showUpdateForm(@PathVariable("id") int id, Model model) {
+        GoiVay goiVay = goivayService.getGoivayById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid Goivay Id:" + id));
+        model.addAttribute("goivays", goiVay);
+        model.addAttribute("categories", categoryService.getAllCategories());
+        return "/admin/goivay/Updategoivay";
+    }
+    @PostMapping("/goivay/edit/{id}")
+    public String updateCourse(@PathVariable int id, @Valid GoiVay goivays, BindingResult result,@RequestParam MultipartFile imageProduct) {
+        if (result.hasErrors()) {
+            goivays.setMaGoiVay(id);
+            return "/admin/goivay/Updategoivay";
+        }
+        goivayService.updateImage(goivays, imageProduct);
+        goivayService.updateGoivay(goivays);
+        return "redirect:/admin/goivay";
+    }
+    @GetMapping("/tintuc")
+    public String tintuc(Model model) {
+        model.addAttribute("tintucs", tinTucService.getAllTinTuc());
+        return "admin/tintuc/index";
+    }
+    @GetMapping("/tintuc2")
+    public String tintuc2(Model model) {
+        model.addAttribute("tintucs", tinTucService.getActiveNews());
+        return "admin/tintuc/index";
+    }
+    @GetMapping("/tintuc3")
+    public String tintuc3(Model model) {
+        model.addAttribute("tintucs", tinTucService.getHideNews());
+        return "admin/tintuc/index";
+    }
     @GetMapping("/tintuc/add")
     public String showAddFormTinTuc(Model model) {
         model.addAttribute("tintucs", new TinTuc());;
@@ -130,6 +169,11 @@ public class AdminController {
         tinTuc.setTimeActive(LocalDateTime.now());
         tinTucService.addTinTuc(tinTuc);
         return "redirect:/admin/tintuc";
+    }
+    @GetMapping("/card")
+    public String card(Model model) {
+        model.addAttribute("cards", cardService.getAllCard());
+        return "admin/card/index";
     }
     @GetMapping("/card/add")
     public String showAddCardForm(Model model) {
@@ -198,6 +242,26 @@ public class AdminController {
             e.printStackTrace();
             // Handle the error here
         }
+    }
+    @GetMapping("/hopdongmothe/taothe/{id}")
+    public String taothe(Model model, @PathVariable Integer id) {
+        ChiTietMoThe chiTietMoThe = chiTietMoTheService.getChiTietMoTheByHDMTId(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid User Id:" + id));
+       model.addAttribute("ctmt", chiTietMoThe);
+        return "admin/hopdongmothe/taothe";
+    }
+    @PostMapping("/hopdongmothe/taothe/{id}")
+    public String taothe2(@PathVariable Integer id, @RequestParam String SoThe, @RequestParam String TenTrenThe, @RequestParam int Ccv,@RequestParam int cardMonth,@RequestParam int cardYear,@RequestParam float CardLimit) {
+        ChiTietMoThe chiTietMoThe = chiTietMoTheService.getChiTietMoTheByHDMTId(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid User Id:" + id));
+        chiTietMoThe.setSoThe(SoThe);
+        chiTietMoThe.setTenKH(TenTrenThe);
+        chiTietMoThe.setCcv(Ccv);
+        chiTietMoThe.setGioiHan(CardLimit);
+        chiTietMoThe.setNgayMoThe(LocalDateTime.now());
+        chiTietMoThe.setNgayHetHan(calculateExpirationDate(cardMonth,cardYear));
+        chiTietMoTheService.updateChiTietMoThe(chiTietMoThe);
+        return "redirect:/admin/hopdongmothe";
     }
     @GetMapping("/hopdongmothe")
     public String hopdongmothe(Model model) {
@@ -274,5 +338,12 @@ public class AdminController {
             e.printStackTrace();
             // Handle the error here
         }
+    }
+    public LocalDateTime calculateExpirationDate(int month, int year) {
+        YearMonth yearMonth = YearMonth.of(year, month);
+        int lastDayOfMonth = yearMonth.lengthOfMonth();
+        LocalDate expirationDate = LocalDate.of(year, month, lastDayOfMonth);
+        LocalDateTime expirationDateTime = expirationDate.atStartOfDay();
+        return expirationDateTime;
     }
 }
