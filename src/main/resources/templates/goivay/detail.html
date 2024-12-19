@@ -75,7 +75,7 @@
                                         <span>Tổng thanh toán</span>
                                         <b><i id="loan-total"></i>VNĐ</b>
                                     </p>
-                                    <a asp-action="Index" asp-controller="HopDongVay" class="thm-btn">Vay Ngay</a>
+                                    <a href="/goivay/dangkivay" class="thm-btn">Vay Ngay</a>
                                 </div><!-- /.about-one__from-content -->
                             </form>
 
@@ -99,7 +99,9 @@
                             <img src="../Layout/User/assets/images/services/service-d-1-1.jpg" class="img-fluid" alt="">
                         </div><!-- /.service-details__image -->
                         <h3 th:text="${goivays.tenGoiVay}"></h3>
-                        <h4 ></h4>
+                        <h5 th:text="'Lãi suất từ 1->11 tháng:'+${goivays.laiSuatCoBan}"></h5>
+                        <h5 th:text="'Lãi suất từ 12->17 tháng:'+${goivays.laiSuat2}"></h5>
+                        <h5 th:text="'Lãi suất từ 18->24 tháng:'+${goivays.laiSuat3}"></h5>
                         <p th:text="${goivays.moTa1}">
                         </p>
                         <p th:text="${goivays.moTa2}">
@@ -112,6 +114,12 @@
                             </div>
                             <p th:text="${goivays.moTa3}">
                                </p>
+                            <p th:text="${goivays.moTa4}">
+                            </p>
+                            <p th:text="${goivays.moTa5}">
+                            </p>
+                            <p th:text="${goivays.moTa6}">
+                            </p>
                             <ul class="list-unstyled about-two__list service-details__list">
                                 <li>
                                     <i class="fa fa-check-circle"></i>
@@ -123,7 +131,7 @@
                                 </li>
                                 <li>
                                     <i class="fa fa-check-circle"></i>
-                                    Thời hạn vay lên tới 12 tháng
+                                    Thời hạn vay lên tới 24 tháng
                                 </li>
                                 <li>
                                     <i class="fa fa-check-circle"></i>

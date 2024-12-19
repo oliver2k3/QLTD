@@ -1,6 +1,7 @@
 package com.nhom7.qltd.controller;
 
 import com.nhom7.qltd.model.*;
+import com.nhom7.qltd.repository.ContactRepository;
 import com.nhom7.qltd.service.*;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -53,13 +54,16 @@ public class AdminController {
     private HopDongMoTheService hopDongMoTheService;
     @Autowired
     private ChiTietMoTheService chiTietMoTheService;
-    public AdminController(GoivayService goivayService, CategoryService categoryService, TinTucService tinTucService, TinTucCategoryService tinTucCategoryService, CardService cardService, com.nhom7.qltd.service.UserService userService) {
+    @Autowired
+    private  final ContactRepository contactRepository;
+    public AdminController(GoivayService goivayService, CategoryService categoryService, TinTucService tinTucService, TinTucCategoryService tinTucCategoryService, CardService cardService, com.nhom7.qltd.service.UserService userService, ContactRepository contactRepository) {
         this.goivayService = goivayService;
         this.categoryService = categoryService;
         this.tinTucService = tinTucService;
         this.tinTucCategoryService = tinTucCategoryService;
         this.cardService = cardService;
         UserService = userService;
+        this.contactRepository = contactRepository;
     }
     @GetMapping("")
     public String admin(Model model) {
@@ -118,12 +122,26 @@ public class AdminController {
     }
     @PostMapping("/goivay/edit/{id}")
     public String updateCourse(@PathVariable int id, @Valid GoiVay goivays, BindingResult result,@RequestParam MultipartFile imageProduct) {
+
         if (result.hasErrors()) {
             goivays.setMaGoiVay(id);
             return "/admin/goivay/Updategoivay";
         }
-        goivayService.updateImage(goivays, imageProduct);
-        goivayService.updateGoivay(goivays);
+if (imageProduct.isEmpty()) {
+            GoiVay existingGoivay = goivayService.getGoivayById(id)
+                    .orElseThrow(() -> new IllegalArgumentException("Invalid Goivay Id:" + id));
+            goivays.setImage(existingGoivay.getImage());
+        }
+else {
+            goivayService.updateImage(goivays, imageProduct);
+        }
+
+        goivayService.updateGoivay(goivays, id);
+        return "redirect:/admin/goivay";
+    }
+    @GetMapping("/goivay/delete/{id}")
+    public String deleteCourse(@PathVariable int id) {
+        goivayService.deleteGoivayById(id);
         return "redirect:/admin/goivay";
     }
     @GetMapping("/tintuc")
@@ -181,15 +199,36 @@ public class AdminController {
         return "/admin/card/AddCard";
     }
     @PostMapping("/card/add")
-    public String addCard(@Valid TheTinDung card, BindingResult result, @RequestParam MultipartFile imageProduct) {
-        if (result.hasErrors()) {
-            return "/admin/card/AddCard";
-        }
+    public String addCard(@Valid TheTinDung card, @RequestParam MultipartFile imageProduct) {
+
         cardService.updateImage(card, imageProduct);
         cardService.addCard(card);
         return "redirect:/admin/card";
     }
+    @GetMapping("/card/edit/{id}")
+    public String showUpdateCardForm(@PathVariable("id") int id, Model model) {
+        TheTinDung card = cardService.getCardById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid Goivay Id:" + id));
+        model.addAttribute("cards", card);
+        return "/admin/card/UpdateCard";
 
+    }
+    @PostMapping("/card/edit/{id}")
+    public String updateCard(@PathVariable int id, @Valid TheTinDung card,@RequestParam MultipartFile imageProduct) {
+
+
+        if (imageProduct.isEmpty()) {
+            TheTinDung existingGoivay = cardService.getCardById(id)
+                    .orElseThrow(() -> new IllegalArgumentException("Invalid Goivay Id:" + id));
+            card.setImage(existingGoivay.getImage());
+        }
+        else {
+            cardService.updateImage(card, imageProduct);
+        }
+
+        cardService.updateCard(card, id);
+        return "redirect:/admin/goivay";
+    }
     @PostMapping("/hopdongvay/xacnhan/{hdvId}")
     public String xacnhan(@PathVariable Integer hdvId) {
         HopDongVay hopDongVay = hopdongvayService.getHopdongvayById(hdvId)
@@ -200,6 +239,7 @@ public class AdminController {
         hopDongVay.setStatus(newStatus);
         chiTietHDV.setNgayTraTiepTheo(LocalDateTime.now().plusMonths(1));
         chiTietHDV.setNgayHetHan(LocalDateTime.now().plusMonths(chiTietHDV.getThoiHan()));
+        chiTietHDV.setSoTienKinay(chiTietHDV.getEmi());
         chiTietHDVService.updateChiTietHDV(chiTietHDV);
         hopdongvayService.updateHopdongvay(hopDongVay);
         return "redirect:/admin/hopdongvay";
@@ -224,23 +264,15 @@ public class AdminController {
     }
     @GetMapping("/download/{docfile}")
     public void downloadFile(HttpServletResponse response, @PathVariable String docfile) {
-        // Base directory where the files are located
         String baseDir = "static/files/hopdongvay/";
-
-        // Construct the file path
         Path filePath = Paths.get(baseDir + docfile);
-
-        // Set the content type and header for file download
         response.setContentType("application/octet-stream");
         response.setHeader("Content-Disposition", "attachment; filename=\"" + filePath.getFileName().toString() + "\"");
-
-        // Read the file and write it to the response's output stream
         try {
             Files.copy(filePath, response.getOutputStream());
             response.getOutputStream().flush();
         } catch (IOException e) {
             e.printStackTrace();
-            // Handle the error here
         }
     }
     @GetMapping("/hopdongmothe/taothe/{id}")
@@ -286,6 +318,28 @@ public class AdminController {
         model.addAttribute("hopdongmothes", hopDongMoTheService.getHDMTdatuchoi());
         return "admin/hopdongmothe/index";
     }
+    @GetMapping("/tintuc/duyetbai/{id}")
+    public String duyetbai(@PathVariable Integer id) {
+        TinTuc tinTuc = tinTucService.getTinTucById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid User Id:" + id));
+        tinTuc.setHide(false);
+        tinTuc.setTimeActive(LocalDateTime.now());
+        tinTucService.saveTinTuc(tinTuc);
+        return "redirect:/admin/tintuc";
+    }
+    @GetMapping("/tintuc/huyduyet/{id}")
+    public String huyduyet(@PathVariable Integer id) {
+        TinTuc tinTuc = tinTucService.getTinTucById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid User Id:" + id));
+        tinTuc.setHide(true);
+        tinTucService.saveTinTuc(tinTuc);
+        return "redirect:/admin/tintuc";
+    }
+    @GetMapping("/tintuc/delete/{id}")
+    public String deleteTinTuc(@PathVariable int id) {
+        tinTucService.deleteTintucById(id);
+        return "redirect:/admin/tintuc";
+    }
     @PostMapping("/hopdongmothe/xacnhan/{hdvId}")
     public String xacnhan2(@PathVariable Integer hdvId) {
         HopDongMoThe hopDongMoThe = hopDongMoTheService.getHopDongMoTheById(hdvId)
@@ -320,23 +374,16 @@ public class AdminController {
     }
     @GetMapping("/download2/{docfile}")
     public void downloadFile2(HttpServletResponse response, @PathVariable String docfile) {
-        // Base directory where the files are located
         String baseDir = "static/files/hopdongmothe/";
-
-        // Construct the file path
         Path filePath = Paths.get(baseDir + docfile);
-
-        // Set the content type and header for file download
         response.setContentType("application/octet-stream");
         response.setHeader("Content-Disposition", "attachment; filename=\"" + filePath.getFileName().toString() + "\"");
-
-        // Read the file and write it to the response's output stream
         try {
             Files.copy(filePath, response.getOutputStream());
             response.getOutputStream().flush();
         } catch (IOException e) {
             e.printStackTrace();
-            // Handle the error here
+
         }
     }
     public LocalDateTime calculateExpirationDate(int month, int year) {
@@ -345,5 +392,39 @@ public class AdminController {
         LocalDate expirationDate = LocalDate.of(year, month, lastDayOfMonth);
         LocalDateTime expirationDateTime = expirationDate.atStartOfDay();
         return expirationDateTime;
+    }
+    @GetMapping("/user")
+    public String user(Model model) {
+        model.addAttribute("users", UserService.getAllUsers());
+        return "admin/user/index";
+    }
+    @GetMapping("/user/edit/{username}")
+    public String editProfile(@PathVariable String username, Model model) {
+        User user = userService.findByUsername(username)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid User Id:" + username));
+        model.addAttribute("users", user);
+        return "admin/user/editUser";
+    }
+    @PostMapping("/user/edit/{username}")
+    public String editProfile(@PathVariable String username,@RequestParam String email, @RequestParam String phone,@RequestParam String name,
+
+                              Model model) {
+        User user = userService.findByUsername(username)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid User name:" + username));
+        user.setEmail(email);
+        user.setPhone(phone);
+        user.setName(name);
+        userService.save(user);
+        return "redirect:/admin/user";
+    }
+    @GetMapping("/user/delete/{username}")
+    public String deleteUser(@PathVariable String username) {
+        UserService.deleteByUsername(username);
+        return "redirect:/admin/user";
+    }
+    @GetMapping("/contact")
+    public String contact(Model model) {
+        model.addAttribute("contacts", contactRepository.findAll());
+        return "admin/contact/index";
     }
 }

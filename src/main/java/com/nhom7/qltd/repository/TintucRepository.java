@@ -13,4 +13,5 @@ public interface TintucRepository extends JpaRepository<TinTuc, Integer>{
     List<TinTuc> findTop3ByHideFalseOrderByTimeActiveDesc(Pageable pageable);
     List<TinTuc> findByCategoryIdAndHideFalseOrderByTimeActive(Integer categoryId);
     List<TinTuc> findByHideTrueOrderByTimeActiveDesc();
+    List<TinTuc> findTinTucsByUserUsername(String username);
 }

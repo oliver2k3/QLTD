@@ -72,6 +72,6 @@ public class CardController {
         hopDongMoThe.setChiTietMoThe(chiTietMoThe);
         hopDongMoTheService.addCTMT(chiTietMoThe);
 
-        return "redirect:/admin/goivay";
+        return "redirect:/user/hopdongmothe";
     }
 }

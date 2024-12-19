@@ -32,8 +32,23 @@ public class CardService {
     public Optional <TheTinDung> getCardById(int id) {
         return cardRepository.findById(id);
     }
-    public TheTinDung updateCard(TheTinDung card) {
-        return cardRepository.save(card);
+    public TheTinDung updateCard(TheTinDung card, int id) {
+        TheTinDung existingCard = cardRepository.findById((id) )
+                .orElseThrow(() -> new IllegalStateException("Product with ID " +
+                        card.getMaThe() + " does not exist."));
+
+
+        existingCard.setTenThe(card.getTenThe());
+        existingCard.setMoTa1(card.getMoTa1());
+        existingCard.setMoTa2(card.getMoTa2());
+        existingCard.setMoTa3(card.getMoTa3());
+        existingCard.setMoTa4(card.getMoTa4());
+        existingCard.setMoTa5(card.getMoTa5());
+        existingCard.setMoTa6(card.getMoTa6());
+        existingCard.setImage(card.getImage());
+
+
+        return cardRepository.save(existingCard);
     }
     public void updateImage(TheTinDung card, MultipartFile imageProduct)
     {

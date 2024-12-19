@@ -2,7 +2,9 @@ package com.nhom7.qltd.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
+import org.hibernate.validator.constraints.Length;
 
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -25,14 +27,18 @@ public class TinTuc {
     private String image2;
     @Column(name = "image3")
     private String image3;
-    @Column(name = "paragraph1", nullable = false)
+    @Column(name = "paragraph1", nullable = false )
+    @Length(max = 1000)
     private String paragraph1;
     @NotBlank(message = "Vui lòng nhập đoạn văn 1")
     @Column(name = "paragraph2")
+    @Length(max = 1000)
     private String paragraph2;
     @Column(name = "paragraph3")
+    @Length(max = 1000)
     private String paragraph3;
     @Column(name = "paragraph4")
+    @Size(max = 1000)
     private String paragraph4;
     @Column(name = "TimeUpload")
     private LocalDateTime timeUpload;

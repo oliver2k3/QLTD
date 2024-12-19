@@ -35,8 +35,8 @@ public class GoivayService {
         }
         goivayRepository.deleteById(id);
     }
-    public GoiVay updateGoivay(GoiVay goiVay) {
-        GoiVay existingGoivay = goivayRepository.findById((int) goiVay.getMaGoiVay())
+    public GoiVay updateGoivay(GoiVay goiVay, int id) {
+        GoiVay existingGoivay = goivayRepository.findById((id) )
                 .orElseThrow(() -> new IllegalStateException("Product with ID " +
                         goiVay.getMaGoiVay() + " does not exist."));
 
