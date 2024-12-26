@@ -15,8 +15,8 @@ public class SavingService {
     private final SavingDAO savingDAO;
     private final UsersService userService;
 
-//    public void createSaving(Integer userId, Double depositAmount, Integer depositDuration, Double interestRate) {
-//        UserEntity user = userService.getUserById(userId);
+//    public void createSaving(String  email, Double depositAmount, Integer depositDuration, Double interestRate) {
+//        UserEntity user = userService.getUserByEmail(email);
 //        if (user.getBalance() < depositAmount) {
 //            throw new IllegalArgumentException("Insufficient balance");
 //        }
@@ -25,7 +25,7 @@ public class SavingService {
 //        userService.updateUser(user);
 //
 //        SavingEntity savingEntity = new SavingEntity();
-//        savingEntity.setUserId(userId);
+//        savingEntity.setEmail(email);
 //        savingEntity.setDepositAmount(depositAmount);
 //        savingEntity.setDepositDuration(depositDuration);
 //        savingEntity.setInterestRate(interestRate);
@@ -36,7 +36,7 @@ public class SavingService {
 //
 //        savingDAO.save(savingEntity);
 //    }
-    public void creatSaving(SavingDto savingDto) {
+    public void creatSaving2(SavingDto savingDto) {
         UserEntity user = userService.getUserByEmail(savingDto.getEmail());
         if (user.getBalance() < savingDto.getAmount()) {
             throw new IllegalArgumentException("Insufficient balance");
@@ -53,5 +53,6 @@ public class SavingService {
         savingEntity.setCreatedDate(LocalDateTime.now());
         savingEntity.setMaturityDate(LocalDateTime.now().plusMonths(savingDto.getDepositDuration()));
         savingEntity.setStatus("Active");
+        savingDAO.save(savingEntity);
     }
 }

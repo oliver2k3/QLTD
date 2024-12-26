@@ -20,21 +20,22 @@ public class SavingController {
     private final UsersService userService;
 
 //    @PostMapping("/deposit")
-//    public void createSaving(@RequestBody Map<String, Object> request) {
-//        Integer userId = (Integer) request.get("userId");
-//        Double depositAmount = (Double) request.get("depositAmount");
+//    public void createSaving(@RequestBody Map<String, Object> request, @RequestHeader("Authorization") String token) {
+//        String email = userService.getEmailfromToken(token.substring(7));
+//
+//        Double depositAmount = (Double) request.get("amount");
 //        Integer depositDuration = (Integer) request.get("depositDuration");
 //        Double interestRate = (Double) request.get("interestRate");
 //
-//        savingService.createSaving(userId, depositAmount, depositDuration, interestRate);
+//        savingService.createSaving(email, depositAmount, depositDuration, interestRate);
 //    }
-    @PostMapping("/deposit")
+    @PostMapping("/deposit2")
     public ResponseEntity<Object> createSaving(@RequestBody SavingDto savingDto, @RequestHeader("Authorization") String token) {
         Map<String, Object> responseBody = new HashMap<>();
         try {
         String email = userService.getEmailfromToken(token.substring(7));
         savingDto.setEmail(email);
-        savingService.creatSaving(savingDto);
+        savingService.creatSaving2(savingDto);
         return ResponseEntity.ok().build();
         } catch (IllegalArgumentException ie) {
             responseBody.put("error", ie.getMessage());
