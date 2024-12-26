@@ -24,7 +24,7 @@
                 <th>Mô tả 4</th>
                 <th>Thời gian đăng</th>
                 <th>Thời gian duyệt</th>
-                <th>Trạng thái</th>
+                <th>Trạng thái Ẩn</th>
                 <th>Hình Ảnh 1</th>
                 <th>Hình Ảnh 2</th>
                 <th>Hình Ảnh 3</th>
@@ -58,6 +58,13 @@
                 <td>
                     <a th:href="@{/admin/tintuc/edit/{id}(id=${tintuc.id})}" class="btn btn-primary">Sửa</a>
                     <a th:href="@{/admin/tintuc/delete/{id}(id=${tintuc.id})}" class="btn btn-danger">Xóa</a>
+
+                </td>
+                <td th:if="${tintuc.hide}">
+                    <a th:href="@{/admin/tintuc/duyetbai/{id}(id=${tintuc.id})}" class="btn btn-danger">Duyệt</a>
+                </td>
+                <td th:if="${tintuc.hide } !=true ">
+                    <a th:href="@{/admin/tintuc/huyduyet/{id}(id=${tintuc.id})}" class="btn btn-danger">Ẩn bài</a>
                 </td>
             </tr>
             </tbody>

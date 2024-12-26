@@ -1,4 +1,4 @@
-package com.nhom7.qltd.DTO;
+package com.nhom7.qltd.dto;
 
 import lombok.Data;
 

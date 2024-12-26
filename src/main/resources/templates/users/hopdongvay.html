@@ -164,11 +164,11 @@
                 <tbody>
                 <tr class="border-b border-card dark:border-card-foreground">
                     <td class="py-3 px-4" th:text="${hopdongvay.id}"></td>
-                    <td class="py-3 px-4" th:text="${hopdongvay.CT_HDV.soTien}"></td>
+                    <td class="py-3 px-4" th:text="${#numbers.formatDecimal(hopdongvay.CT_HDV.soTien, 0, 'COMMA', 0, 'POINT')} + ' vnđ'"></td>
                     <td class="py-3 px-4" th:text="${hopdongvay.CT_HDV.laiSuat}"></td>
                     <td class="py-3 px-4" th:text="${hopdongvay.CT_HDV.thoiHan } +'tháng' "></td>
-                    <td class="py-3 px-4"th:text="${hopdongvay.CT_HDV.tongLai}"></td>
-                    <td class="py-3 px-4"th:text="${hopdongvay.CT_HDV.tongTien}"></td>
+                    <td class="py-3 px-4" th:text="${#numbers.formatDecimal(hopdongvay.CT_HDV.tongLai, 0, 'COMMA', 0, 'POINT')} + ' vnđ'"></td>
+                    <td class="py-3 px-4" th:text="${#numbers.formatDecimal(hopdongvay.CT_HDV.tongTien, 0, 'COMMA', 0, 'POINT')} + ' vnđ'"></td>
                     <td class="py-3 px-4" th:text="${hopdongvay.CT_HDV.emi}"></td>
 
                 </tr>
@@ -191,12 +191,12 @@
                 </thead>
                 <tbody>
                 <tr class="border-b border-card dark:border-card-foreground">
-                    <td class="py-3 px-4" th:text="${hopdongvay.CT_HDV.daTra}"></td>
-                    <td class="py-3 px-4" th:text="${hopdongvay.CT_HDV.conLai}">0</td>
-                    <td class="py-3 px-4" th:text="${hopdongvay.CT_HDV.ngayTraGanNhat}"></td>
-                    <td class="py-3 px-4" th:text="${hopdongvay.CT_HDV.ngayTraTiepTheo}"></td>
-                    <td class="py-3 px-4" th:text="${hopdongvay.CT_HDV.soTienKinay}"></td>
-                    <td class="py-3 px-4" th:text="${hopdongvay.CT_HDV.ngayHetHan}"></td>
+                    <td class="py-3 px-4" th:text="${#numbers.formatDecimal(hopdongvay.CT_HDV.daTra, 0, 'COMMA', 0, 'POINT')} + ' vnđ'"></td>
+                    <td class="py-3 px-4" th:text="${#numbers.formatDecimal(hopdongvay.CT_HDV.conLai, 0, 'COMMA', 0, 'POINT')} + ' vnđ'"></td>
+                    <td class="py-3 px-4" th:text="${#temporals.format(hopdongvay.CT_HDV.ngayTraGanNhat, 'dd-MM-yyyy')}"></td>
+                    <td class="py-3 px-4" th:text="${#temporals.format(hopdongvay.CT_HDV.ngayTraTiepTheo, 'dd-MM-yyyy')}"></td>
+                    <td class="py-3 px-4" th:text="${#numbers.formatDecimal(hopdongvay.CT_HDV.soTienKinay, 0, 'COMMA', 0, 'POINT')} + ' vnđ'"></td>
+                    <td class="py-3 px-4" th:text="${#temporals.format(hopdongvay.CT_HDV.ngayHetHan, 'dd-MM-yyyy')}"></td>
                 </tr>
                 </tbody>
             </table>

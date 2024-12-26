@@ -31,6 +31,9 @@ public class UserService implements UserDetailsService {
         user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
         userRepository.save(user);
     }
+    public void deleteByUsername(String username) {
+        userRepository.deleteUserByUsername(username);
+    }
     public List<User> getAllUsers(){
         return userRepository.findAll();
     }

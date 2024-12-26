@@ -12,5 +12,5 @@ public interface IUserRepository extends JpaRepository<User, UUID> {
     Optional<User> findByUsername(String username);
     Optional<User> findUserById(UUID id);
     boolean existsByUsername(String email);
-
+    void deleteUserByUsername(String username);
 }

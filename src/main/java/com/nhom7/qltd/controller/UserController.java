@@ -57,6 +57,7 @@ public class UserController {
     model.addAttribute("users", user);
     return "users/editProfile";
 }
+
 @GetMapping("/hopdongvay")
     public String hopdongvay(Model model) {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -68,6 +69,20 @@ public class UserController {
     return "users/hopdongvay";
 
 }
+    @PostMapping("/profile/edit")
+    public String editProfile(@RequestParam String email, @RequestParam String phone,@RequestParam String name,
+
+                              Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        User user = userService.findByUsername(username)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid User name:" + username));
+        user.setEmail(email);
+        user.setPhone(phone);
+        user.setName(name);
+        userService.save(user);
+        return "redirect:/user/profile";
+    }
     @GetMapping("/hopdongmothe")
     public String hopdongmothe(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -84,7 +99,7 @@ public class UserController {
     String baseUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
     ChiTietHDV chiTietHDV = chiTietHDVService.getCTHDVByHdvId(hdvId)
             .orElseThrow(() -> new IllegalArgumentException("Invalid User Id:" + hdvId));
-    int orderTotal = (int) chiTietHDV.getEmi();
+    int orderTotal = (int) chiTietHDV.getSoTienKinay();
     String orderInfo = "Thanh toan hop dong vay voi id: " + hdvId;
     String vnpayUrl = vnPayService.createOrder(orderTotal,orderInfo, baseUrl);
     session.setAttribute("hdvId", hdvId);
@@ -127,7 +142,18 @@ public class UserController {
         tinTuc.setUser(user);
         tinTuc.setTimeUpload(LocalDateTime.now());
         tinTucService.addTinTuc(tinTuc);
-        return "redirect:/user/tintuc";
+        return "redirect:/tintuc";
+    }
+    @GetMapping("/tintuc")
+    public String tintuc(Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
+        List<TinTuc> tinTucs = tinTucService.findTinTucsByUser(username);
+        model.addAttribute("categories", tinTucCategoryService.getAllTinTucCategories());
+        model.addAttribute("news", tinTucs);
+
+        return "tintuc/index";
     }
 
 

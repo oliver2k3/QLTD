@@ -24,6 +24,12 @@ public class TinTucService {
     public List<TinTuc> getAllTinTuc(){
         return tinTucRepository.findAll();
     }
+    public Optional<TinTuc> getTinTucById(Integer id) {
+        return tinTucRepository.findById(id);
+    }
+    public TinTuc saveTinTuc(TinTuc tinTuc) {
+        return tinTucRepository.save(tinTuc);
+    }
     public List<TinTuc> getTop3TinTuc() {
         return tinTucRepository.findTop3ByHideFalseOrderByTimeActiveDesc(PageRequest.of(0, 3));
     }
@@ -32,6 +38,15 @@ public class TinTucService {
     }
     public List<TinTuc> getHideNews(){
         return tinTucRepository.findByHideTrueOrderByTimeActiveDesc();
+    }
+    public List<TinTuc> findTinTucsByUser(String username) {
+        return tinTucRepository.findTinTucsByUserUsername(username);
+    }
+    public void deleteTintucById(int id) {
+        if (!tinTucRepository.existsById(id)) {
+            throw new IllegalStateException("Product with ID " + id + " does not exist.");
+        }
+        tinTucRepository.deleteById(id);
     }
     public TinTuc addTinTuc(TinTuc tinTuc) {
         return tinTucRepository.save(tinTuc);

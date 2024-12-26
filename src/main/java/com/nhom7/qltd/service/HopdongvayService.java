@@ -15,6 +15,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -114,4 +115,11 @@ public class HopdongvayService {
     public void updateHopdongvay(HopDongVay hopDongVay) {
         hopdongvayRepository.save(hopDongVay);
     }
+//    public void updateStatusForExpiredPayments() {
+//        List<HopDongVay> hopDongVays = hopdongvayRepository.findByPaymentDeadlineBeforeAndStatusNot(LocalDateTime.now(), 3);
+//        for (HopDongVay hopdongvay : hopDongVays) {
+//            hopdongvay.getStatus().setId(3);
+//            hopdongvayRepository.save(hopdongvay);
+//        }
+//    }
 }
