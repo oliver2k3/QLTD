@@ -1,6 +1,7 @@
 package com.nhom7.qltd.restcontroller;
 
 import com.nhom7.qltd.dto.SavingDto;
+import com.nhom7.qltd.entity.SavingEntity;
 import com.nhom7.qltd.mobile_service.SavingService;
 import com.nhom7.qltd.mobile_service.UsersService;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -44,6 +46,18 @@ public class SavingController {
         catch (DuplicateKeyException de) {
             responseBody.put("error", de.getMessage());
             return ResponseEntity.status(HttpStatus.CONFLICT).body(responseBody);
+        }
+    }
+    @GetMapping("/my-savings")
+    public ResponseEntity<Object> getMySavings(@RequestHeader("Authorization") String token) {
+        Map<String, Object> responseBody = new HashMap<>();
+        try {
+            String email = userService.getEmailfromToken(token.substring(7));
+            List<SavingEntity> savings = savingService.getSavingsByEmail(email);
+            return ResponseEntity.ok(savings);
+        } catch (IllegalArgumentException ie) {
+            responseBody.put("error", ie.getMessage());
+            return ResponseEntity.badRequest().body(responseBody);
         }
     }
 }

@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -54,5 +55,9 @@ public class SavingService {
         savingEntity.setMaturityDate(LocalDateTime.now().plusMonths(savingDto.getDepositDuration()));
         savingEntity.setStatus("Active");
         savingDAO.save(savingEntity);
+    }
+
+    public List<SavingEntity> getSavingsByEmail(String email) {
+        return savingDAO.findByEmail(email);
     }
 }
