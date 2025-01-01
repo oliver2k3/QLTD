@@ -67,6 +67,9 @@ public class UsersService {
         UserEntity userEntity = userDao.findByEmail(email).orElse(null);
         return userEntity.getId();
     }
+    public String generateToken(UserEntity userEntity) {
+        return jwtUtil.generateToken(userEntity);
+    }
     public void payBill(Double amount, String token) {
         String email = jwtUtil.getEmailFromJwt(token);
         UserEntity userEntity = userDao.findByEmail(email).orElse(null);

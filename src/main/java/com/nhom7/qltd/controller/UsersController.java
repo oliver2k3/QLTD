@@ -28,20 +28,16 @@ public class UsersController {
     private final TransitionService transitionService;
     private final UserMapper userMapper;
 
-
     @PostMapping
     public ResponseEntity<Object> createUser(@RequestBody RegisterDto registerDto) {
         Map<String, Object> responseBody = new HashMap<>();
         try {
-
             UserEntity userEntity = userService.createUser(registerDto);
-
             URI location = ServletUriComponentsBuilder
                     .fromCurrentRequest()
                     .path("/{email}")
                     .buildAndExpand(registerDto.getEmail())
                     .toUri();
-
             return ResponseEntity.created(location).body(userEntity);
         } catch (IllegalArgumentException ie) {
             responseBody.put("error", ie.getMessage());
@@ -52,15 +48,12 @@ public class UsersController {
         }
     }
 
-
-
     @GetMapping("/{card}")
     public ResponseEntity<Object> getUserByCard(@PathVariable String card) {
         UserEntity userEntity = userService.getUserByCard(card);
         if (userEntity == null) {
             return ResponseEntity.notFound().build();
         }
-
         return ResponseEntity.ok(userMapper.entityToDto(userEntity));
     }
 
@@ -80,24 +73,31 @@ public class UsersController {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(responseBody);
         }
     }
+
     @PostMapping("/login")
     public ResponseEntity<Object> loginUser(@RequestBody LoginDto loginDto) {
         Map<String, Object> responseBody = new HashMap<>();
         try {
             UserEntity userEntity = userService.validateUser(loginDto);
             if (userEntity != null) {
-                return ResponseEntity.ok().build();
+                String token = userService.generateToken(userEntity);
+                System.out.println("Login successful for user: " + loginDto.getEmail());
+                responseBody.put("token", token);
+                return ResponseEntity.ok(responseBody);
             } else {
                 responseBody.put("error", "Invalid credentials");
+                System.out.println("Invalid credentials for user: " + loginDto.getEmail());
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseBody);
             }
         } catch (Exception e) {
             responseBody.put("error", e.getMessage());
+            System.out.println("Exception during login: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseBody);
         }
     }
+
     @GetMapping("/current-user")
-    public ResponseEntity<Object> getCurrentUser(@RequestHeader("Authorization") String token){
+    public ResponseEntity<Object> getCurrentUser(@RequestHeader("Authorization") String token) {
         Map<String, Object> responseBody = new HashMap<>();
         try {
             UserEntity userEntity = userService.getUserByEmail(userService.getEmailfromToken(token.substring(7)));
