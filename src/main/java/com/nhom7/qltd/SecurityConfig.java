@@ -1,6 +1,6 @@
 package com.nhom7.qltd;
 import com.nhom7.qltd.filter.JwtRequestFilter;
-import com.nhom7.qltd.service.UserService;
+
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -21,25 +21,15 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity // Kích hoạt tính năng bảo mật web của Spring Security.
 @RequiredArgsConstructor // Lombok tự động tạo constructor có tham số cho tất cả các trường final.
 public class SecurityConfig {
-    private final UserService userService; // Tiêm UserService vào lớp cấu hình này.
+
     private final JwtRequestFilter jwtRequestFilter;
-    @Bean // Đánh dấu phương thức trả về một bean được quản lý bởi Spring Context.
-    public UserDetailsService userDetailsService() {
-        return userService;
-    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(); // Bean mã hóa mật khẩu sử dụng BCrypt.
     }
 
-    @Bean
-    public DaoAuthenticationProvider authenticationProvider() {
-        var auth = new DaoAuthenticationProvider(); // Tạo nhà cung cấp xác thực.
-        auth.setUserDetailsService(userDetailsService()); // Thiết lập dịch vụ chi tiết người dùng.
-        auth.setPasswordEncoder(passwordEncoder()); // Thiết lập cơ chế mã hóa mật khẩu.
-        return auth; // Trả về nhà cung cấp xác thực.
-    }
+
 
     @Bean
     public SecurityFilterChain securityFilterChain(@NotNull HttpSecurity http)
@@ -77,7 +67,7 @@ public class SecurityConfig {
                         .key("hutech")
                         .rememberMeCookieName("hutech")
                         .tokenValiditySeconds(24 * 60 * 60) // Thời gian nhớ đăng nhập.
-                        .userDetailsService(userDetailsService())
+
                 )
                 .exceptionHandling(exceptionHandling -> exceptionHandling
                         .accessDeniedPage("/403") // Trang báo lỗi khi truy cập không được phép.

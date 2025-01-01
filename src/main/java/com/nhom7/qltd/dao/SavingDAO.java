@@ -1,6 +1,6 @@
 package com.nhom7.qltd.dao;
 
-import com.nhom7.qltd.entity.SavingEntity;
+import com.nhom7.qltd.model.SavingEntity;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;

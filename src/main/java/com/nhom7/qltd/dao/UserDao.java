@@ -1,6 +1,6 @@
 package com.nhom7.qltd.dao;
 
-import com.nhom7.qltd.entity.UserEntity;
+import com.nhom7.qltd.model.UserEntity;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.Optional;

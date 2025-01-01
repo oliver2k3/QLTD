@@ -1,7 +1,7 @@
 package com.nhom7.qltd.filter;
 
-import com.nhom7.qltd.entity.UserEntity;
-import com.nhom7.qltd.mobile_service.UsersService;
+import com.nhom7.qltd.model.UserEntity;
+import com.nhom7.qltd.service.UsersService;
 import com.nhom7.qltd.util.JwtUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

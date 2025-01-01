@@ -1,6 +1,6 @@
 package com.nhom7.qltd.util;
 
-import com.nhom7.qltd.entity.UserEntity;
+import com.nhom7.qltd.model.UserEntity;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
