@@ -1,6 +1,7 @@
 package com.nhom7.qltd.service;
 
 import com.nhom7.qltd.dao.UserDao;
+import com.nhom7.qltd.dto.LoginDto;
 import com.nhom7.qltd.dto.RegisterDto;
 import com.nhom7.qltd.model.UserEntity;
 import com.nhom7.qltd.util.JwtUtil;
@@ -9,6 +10,7 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -48,7 +50,13 @@ public class UsersService {
     public String getEmailfromToken(String token) {
         return jwtUtil.getEmailFromJwt(token);
     }
-
+    public UserEntity validateUser(LoginDto loginDto) {
+        Optional<UserEntity> userEntity = userDao.findByEmail(loginDto.getEmail());
+        if (userEntity.isPresent() && userEntity.get().getPassword().equals(loginDto.getPassword())) {
+            return userEntity.get();
+        }
+        return null;
+    }
     public String getCardNumberfromToken(String token) {
         String email = jwtUtil.getEmailFromJwt(token);
         UserEntity userEntity = userDao.findByEmail(email).orElse(null);

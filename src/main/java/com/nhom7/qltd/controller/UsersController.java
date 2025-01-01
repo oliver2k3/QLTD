@@ -1,6 +1,7 @@
 package com.nhom7.qltd.controller;
 
 import com.nhom7.qltd.dto.GetUserInfoDto;
+import com.nhom7.qltd.dto.LoginDto;
 import com.nhom7.qltd.dto.RegisterDto;
 import com.nhom7.qltd.dto.TransitionDto;
 import com.nhom7.qltd.model.UserEntity;
@@ -79,7 +80,22 @@ public class UsersController {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(responseBody);
         }
     }
-
+    @PostMapping("/login")
+    public ResponseEntity<Object> loginUser(@RequestBody LoginDto loginDto) {
+        Map<String, Object> responseBody = new HashMap<>();
+        try {
+            UserEntity userEntity = userService.validateUser(loginDto);
+            if (userEntity != null) {
+                return ResponseEntity.ok().build();
+            } else {
+                responseBody.put("error", "Invalid credentials");
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseBody);
+            }
+        } catch (Exception e) {
+            responseBody.put("error", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseBody);
+        }
+    }
     @GetMapping("/current-user")
     public ResponseEntity<Object> getCurrentUser(@RequestHeader("Authorization") String token){
         Map<String, Object> responseBody = new HashMap<>();
