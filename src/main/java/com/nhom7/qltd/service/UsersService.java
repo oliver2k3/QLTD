@@ -34,6 +34,9 @@ public class UsersService {
         UserEntity userEntity = new UserEntity();
         userEntity.setName(registerDto.getName());
         userEntity.setEmail(registerDto.getEmail());
+        userEntity.setBalance(0.0);
+        userEntity.setCardNumber(registerDto.getPhoneNumber());
+        userEntity.setPhone(registerDto.getPhoneNumber());
         userEntity.setPassword(registerDto.getPassword());
         userEntity.setCreated(LocalDateTime.now());
         userEntity.setUpdated(LocalDateTime.now());
