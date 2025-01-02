@@ -176,8 +176,8 @@ public class UsersController {
                     .map(cardInfo -> new CardInfoDto(
                             cardInfo.getCardNumber(),
                             cardInfo.getBankName(),
-                            cardInfo.getName(),
                             cardInfo.getExpiredDate(),
+                            cardInfo.getName(),
                             cardInfo.getBalance()))
 
                     .toList();

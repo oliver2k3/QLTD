@@ -2,6 +2,7 @@ package com.nhom7.qltd.controller;
 
 import com.nhom7.qltd.dto.SavingDto;
 import com.nhom7.qltd.model.SavingEntity;
+import com.nhom7.qltd.model.UserEntity;
 import com.nhom7.qltd.service.SavingService;
 import com.nhom7.qltd.service.UsersService;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,14 +56,34 @@ public class SavingController {
         try {
             String email = userService.getEmailfromToken(token.substring(7));
             List<SavingEntity> savings = savingService.getSavingsByEmail(email);
-            List<SavingDto> savingDtos = savings.stream()
-                    .map(saving -> new SavingDto(
-                            saving.getEmail(),
+            LocalDateTime now = LocalDateTime.now();
+
+            for (SavingEntity saving : savings) {
+                if (saving.getMaturityDate().isBefore(now) && !"Done".equals(saving.getStatus())) {
+                    saving.setStatus("Done");
+                    UserEntity user = userService.getUserByEmail(email);
+                    user.setBalance(user.getBalance() + saving.getTotalAmount());
+                    userService.updateUser(user);
+                    savingService.updateSaving(saving);
+                }
+            }
+
+            List<SavingEntity> savingEntities = savings.stream()
+                    .map(saving -> new SavingEntity(
+                            saving.getId(),
                             saving.getAmount(),
                             saving.getDepositDuration(),
-                            saving.getInterestRate()))
+                            saving.getInterestRate(),
+                            saving.getEmail(),
+                            saving.getCreatedDate(),
+                            saving.getMaturityDate(),
+                            saving.getStatus(),
+                            saving.getDepositAmount(),
+                            saving.getTotalAmount()
+                    ))
                     .toList();
-            return ResponseEntity.ok(savingDtos);
+
+            return ResponseEntity.ok(savingEntities);
         } catch (IllegalArgumentException ie) {
             responseBody.put("error", ie.getMessage());
             return ResponseEntity.badRequest().body(responseBody);

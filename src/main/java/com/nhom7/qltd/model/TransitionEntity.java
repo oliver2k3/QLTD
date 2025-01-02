@@ -37,4 +37,8 @@ public class TransitionEntity {
     private String senderBank;
     @Column(name = "receiver_bank")
     private String receiverBank;
+    @Column(name = "sender_name")
+    private String senderName;
+    @Column(name = "receiver_name")
+    private String receiverName;
 }
