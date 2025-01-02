@@ -1,11 +1,11 @@
 package com.nhom7.qltd.controller;
 
-import com.nhom7.qltd.dto.GetUserInfoDto;
-import com.nhom7.qltd.dto.LoginDto;
-import com.nhom7.qltd.dto.RegisterDto;
-import com.nhom7.qltd.dto.TransitionDto;
+import com.nhom7.qltd.dto.*;
+import com.nhom7.qltd.model.CardEntity;
+import com.nhom7.qltd.model.SavingEntity;
 import com.nhom7.qltd.model.UserEntity;
 import com.nhom7.qltd.mapper.UserMapper;
+import com.nhom7.qltd.service.CardService;
 import com.nhom7.qltd.service.TransitionService;
 import com.nhom7.qltd.service.UsersService;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +18,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -27,7 +28,7 @@ public class UsersController {
     private final UsersService userService;
     private final TransitionService transitionService;
     private final UserMapper userMapper;
-
+    private final CardService cardService;
     @PostMapping
     public ResponseEntity<Object> createUser(@RequestBody RegisterDto registerDto) {
         Map<String, Object> responseBody = new HashMap<>();
@@ -134,5 +135,51 @@ public class UsersController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(userEntity.getName());
+    }
+
+    @PostMapping("/add-card")
+    public ResponseEntity<Object> addCardToUser(@RequestBody AddCardDto addCardDTO, @RequestHeader("Authorization") String token) {
+        Map<String, Object> responseBody = new HashMap<>();
+        try {
+            String email = userService.getEmailfromToken(token.substring(7));
+            UserEntity user = userService.getUserByEmail(email);
+
+            String result = cardService.addCardToUser(addCardDTO, user);
+            if (result.equals("Success")) {
+                responseBody.put("message", "Card added successfully");
+                return ResponseEntity.ok(responseBody);
+            } else if (result.equals("User already has a card with the same card number and bank name")) {
+                responseBody.put("error", "User already has a card with the same card number and bank name");
+
+            }else if (result.equals("Card does not match existing records")) {
+                responseBody.put("error", "Card does not match existing records");
+            }
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(responseBody);
+        } catch (IllegalArgumentException ie) {
+            responseBody.put("error", ie.getMessage());
+            return ResponseEntity.badRequest().body(responseBody);
+        }
+    }
+    @GetMapping("/my-cards")
+    public ResponseEntity<Object> getCardsOfUser(@RequestHeader("Authorization") String token) {
+        Map<String, Object> responseBody = new HashMap<>();
+        try {
+            String email = userService.getEmailfromToken(token.substring(7));
+            UserEntity user = userService.getUserByEmail(email);
+            List<CardEntity> cardEntities = cardService.getCardsOfUser(user);
+            List<CardInfoDto> cardInfoDtos = cardEntities.stream()
+                    .map(cardInfo -> new CardInfoDto(
+                            cardInfo.getCardNumber(),
+                            cardInfo.getBankName(),
+                            cardInfo.getName(),
+                            cardInfo.getExpiredDate(),
+                            cardInfo.getBalance()))
+
+                    .toList();
+            return ResponseEntity.ok(cardInfoDtos);
+        } catch (IllegalArgumentException ie) {
+            responseBody.put("error", ie.getMessage());
+            return ResponseEntity.badRequest().body(responseBody);
+        }
     }
 }
