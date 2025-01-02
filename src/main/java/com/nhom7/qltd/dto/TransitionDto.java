@@ -14,7 +14,7 @@ public class TransitionDto implements Serializable {
     private String sender;
 
     private String receiver;
-    private  String bank;
+    private  String receiveBank;
     private Double amount;
     private String message;
 

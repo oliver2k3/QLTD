@@ -22,7 +22,7 @@ public class TransitionService {
         UserEntity sender = userDao.findByCardNumber(transitionDto.getSender()).orElseThrow(
                 () -> new IllegalArgumentException("Sender not found")
         );
-        UserEntity receiver = userDao.findByCardNumber(transitionDto.getReceiver()).orElseThrow(
+        UserEntity receiver = userDao.findByCardNumberAndBank(transitionDto.getReceiver(),transitionDto.getReceiveBank()).orElseThrow(
                 () -> new IllegalArgumentException("Receiver not found")
         );
 

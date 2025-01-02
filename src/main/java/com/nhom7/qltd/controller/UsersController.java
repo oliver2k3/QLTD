@@ -57,7 +57,7 @@ public class UsersController {
         return ResponseEntity.ok(userMapper.entityToDto(userEntity));
     }
 
-    @PostMapping("/tranfer")
+    @PostMapping("/transfer")
     public ResponseEntity<Object> transfer(@RequestBody TransitionDto transitionDto, @RequestHeader("Authorization") String token) {
         Map<String, Object> responseBody = new HashMap<>();
         try {
@@ -129,6 +129,7 @@ public class UsersController {
     @GetMapping("/receiver-name/{card}")
     public ResponseEntity<Object> getReceiverByCardNumber(@PathVariable String card) {
         UserEntity userEntity = userService.getUserByCard(card);
+
         if (userEntity == null) {
             return ResponseEntity.notFound().build();
         }
