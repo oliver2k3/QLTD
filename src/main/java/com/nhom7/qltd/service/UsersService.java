@@ -36,6 +36,7 @@ public class UsersService {
         userEntity.setEmail(registerDto.getEmail());
         userEntity.setBalance(0.0);
         userEntity.setCardNumber(registerDto.getPhoneNumber());
+        userEntity.setBank("VPPAY");
         userEntity.setPhone(registerDto.getPhoneNumber());
         userEntity.setPassword(registerDto.getPassword());
         userEntity.setCreated(LocalDateTime.now());

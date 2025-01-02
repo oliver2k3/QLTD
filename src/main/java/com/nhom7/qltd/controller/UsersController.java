@@ -73,7 +73,10 @@ public class UsersController {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(responseBody);
         }
     }
-
+    @GetMapping("/all")
+    public String getAllUsers() {
+        return "List of users";
+    }
     @PostMapping("/login")
     public ResponseEntity<Object> loginUser(@RequestBody LoginDto loginDto) {
         Map<String, Object> responseBody = new HashMap<>();
@@ -111,5 +114,24 @@ public class UsersController {
             responseBody.put("error", ee.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
         }
+    }
+
+    @PostMapping ("/recipient-name")
+    public ResponseEntity<Object> getRecipientNameByCardNumber(@RequestBody Map<String, String> request) {
+        String cardNumber = request.get("cardNumber");
+        UserEntity userEntity = userService.getUserByCard(cardNumber);
+
+        if (userEntity == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(userEntity.getName());
+    }
+    @GetMapping("/receiver-name/{card}")
+    public ResponseEntity<Object> getReceiverByCardNumber(@PathVariable String card) {
+        UserEntity userEntity = userService.getUserByCard(card);
+        if (userEntity == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(userEntity.getName());
     }
 }

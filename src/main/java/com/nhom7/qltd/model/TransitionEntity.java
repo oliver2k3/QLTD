@@ -30,4 +30,11 @@ public class TransitionEntity {
 
     @Column(name = "created_at")
     private LocalDateTime created;
+
+    @Column(name = "message")
+    private String message;
+    @Column(name = "sender_bank")
+    private String senderBank;
+    @Column(name = "receiver_bank")
+    private String receiverBank;
 }

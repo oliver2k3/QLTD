@@ -48,7 +48,10 @@ public class TransitionService {
         transitionEntity.setFromUser(sender.getCardNumber());
         transitionEntity.setToUser(receiver.getCardNumber());
         transitionEntity.setAmount(transitionDto.getAmount());
+        transitionEntity.setSenderBank(sender.getBank());
+        transitionEntity.setReceiverBank(receiver.getBank());
         transitionEntity.setFee(0.0);
+        transitionEntity.setMessage(transitionDto.getMessage());
         transitionEntity.setCreated(LocalDateTime.now());
 
         transitionDao.save(transitionEntity);
