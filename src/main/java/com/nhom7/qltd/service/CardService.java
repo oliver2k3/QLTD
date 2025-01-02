@@ -2,7 +2,9 @@ package com.nhom7.qltd.service;
 
 import com.nhom7.qltd.dao.CardDao;
 import com.nhom7.qltd.dao.CardExampleDao;
+import com.nhom7.qltd.dao.UserDao;
 import com.nhom7.qltd.dto.AddCardDto;
+import com.nhom7.qltd.dto.DepositDto;
 import com.nhom7.qltd.model.CardEntity;
 import com.nhom7.qltd.model.CardExampleEntity;
 import com.nhom7.qltd.model.UserEntity;
@@ -17,7 +19,7 @@ import java.util.Optional;
 public class CardService {
     private final CardDao cardDao;
     private final CardExampleDao cardExampleDao;
-
+    private final UserDao UserDao;
     public String addCardToUser(AddCardDto addCardDTO, UserEntity user) {
         // Check if the user already has a card with the same card number and bank name
         Optional<CardEntity> existingUserCard = cardDao.findByCardNumberAndBankNameAndUser(addCardDTO.getCardNumber(), addCardDTO.getBankName(), user);
@@ -50,5 +52,19 @@ public class CardService {
 
     public List<CardEntity> getCardsOfUser(UserEntity user) {
         return cardDao.findByUser(user);
+    }
+    public String depositToAccount(DepositDto depositDto, UserEntity user) {
+        Optional<CardEntity> cardEntityOptional = cardDao.findByCardNumberAndUser(depositDto.getCardNumber(), user);
+        if (cardEntityOptional.isPresent()) {
+            CardEntity cardEntity = cardEntityOptional.get();
+            cardEntity.setBalance(cardEntity.getBalance() - depositDto.getAmount());
+            cardDao.save(cardEntity);
+            // Assuming there is a method to update the user's account balance
+            user.setBalance(user.getBalance() + depositDto.getAmount());
+            UserDao.save(user);
+            return "Deposit successful";
+        } else {
+            return "Card not found";
+        }
     }
 }

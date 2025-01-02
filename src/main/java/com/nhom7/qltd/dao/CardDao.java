@@ -14,4 +14,6 @@ public interface CardDao extends CrudRepository < CardEntity, Integer> {
     Optional<CardEntity> findByCardNumberAndBankNameAndUser(String cardNumber, String bankName, UserEntity user);
     List<CardEntity> findByUser(UserEntity user);
     Optional<CardEntity> findByCardNumber(String cardNumber);
+
+    Optional<CardEntity> findByCardNumberAndUser(String cardNumber, UserEntity user);
 }

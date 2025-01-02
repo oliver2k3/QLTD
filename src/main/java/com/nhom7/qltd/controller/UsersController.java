@@ -29,6 +29,7 @@ public class UsersController {
     private final TransitionService transitionService;
     private final UserMapper userMapper;
     private final CardService cardService;
+
     @PostMapping
     public ResponseEntity<Object> createUser(@RequestBody RegisterDto registerDto) {
         Map<String, Object> responseBody = new HashMap<>();
@@ -74,10 +75,12 @@ public class UsersController {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(responseBody);
         }
     }
+
     @GetMapping("/all")
     public String getAllUsers() {
         return "List of users";
     }
+
     @PostMapping("/login")
     public ResponseEntity<Object> loginUser(@RequestBody LoginDto loginDto) {
         Map<String, Object> responseBody = new HashMap<>();
@@ -117,7 +120,7 @@ public class UsersController {
         }
     }
 
-    @PostMapping ("/recipient-name")
+    @PostMapping("/recipient-name")
     public ResponseEntity<Object> getRecipientNameByCardNumber(@RequestBody Map<String, String> request) {
         String cardNumber = request.get("cardNumber");
         UserEntity userEntity = userService.getUserByCard(cardNumber);
@@ -127,6 +130,7 @@ public class UsersController {
         }
         return ResponseEntity.ok(userEntity.getName());
     }
+
     @GetMapping("/receiver-name/{card}")
     public ResponseEntity<Object> getReceiverByCardNumber(@PathVariable String card) {
         UserEntity userEntity = userService.getUserByCard(card);
@@ -151,7 +155,7 @@ public class UsersController {
             } else if (result.equals("User already has a card with the same card number and bank name")) {
                 responseBody.put("error", "User already has a card with the same card number and bank name");
 
-            }else if (result.equals("Card does not match existing records")) {
+            } else if (result.equals("Card does not match existing records")) {
                 responseBody.put("error", "Card does not match existing records");
             }
             return ResponseEntity.status(HttpStatus.CONFLICT).body(responseBody);
@@ -160,6 +164,7 @@ public class UsersController {
             return ResponseEntity.badRequest().body(responseBody);
         }
     }
+
     @GetMapping("/my-cards")
     public ResponseEntity<Object> getCardsOfUser(@RequestHeader("Authorization") String token) {
         Map<String, Object> responseBody = new HashMap<>();
@@ -177,6 +182,27 @@ public class UsersController {
 
                     .toList();
             return ResponseEntity.ok(cardInfoDtos);
+        } catch (IllegalArgumentException ie) {
+            responseBody.put("error", ie.getMessage());
+            return ResponseEntity.badRequest().body(responseBody);
+        }
+    }
+
+    @PostMapping("/deposit")
+    public ResponseEntity<Object> depositToAccount(@RequestBody DepositDto depositDto, @RequestHeader("Authorization") String token) {
+        Map<String, Object> responseBody = new HashMap<>();
+        try {
+            String email = userService.getEmailfromToken(token.substring(7));
+            UserEntity user = userService.getUserByEmail(email);
+
+            String result = cardService.depositToAccount(depositDto, user);
+            if (result.equals("Deposit successful")) {
+                responseBody.put("message", result);
+                return ResponseEntity.ok(responseBody);
+            } else {
+                responseBody.put("error", result);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
+            }
         } catch (IllegalArgumentException ie) {
             responseBody.put("error", ie.getMessage());
             return ResponseEntity.badRequest().body(responseBody);
